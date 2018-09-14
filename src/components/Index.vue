@@ -1,6 +1,10 @@
 <template>
     <!--主页面-->
     <div class='index-box'>
+        <div :class="['notice-item',{'show':hasNotice}]">
+            <p>{{noticeInfo}}</p>
+            <span v-if="hasNotice"></span>
+        </div>
         <div :class="['toggle-icon',{'show':showNav}]" @click="navShow()"><span class='icon icon-align-left '></span></div>
         <div class='index-nav'>
             <div class='logo'><img src="../assets/images/logo.png" alt="" /></div>
@@ -11,10 +15,6 @@
                         <span class='icon icon-comment-alt'></span>
                         <span class='notice-count'>2</span>
                     </div> -->
-                    <div :class="['notice-item',{'show':hasNotice}]">
-                        <p>{{noticeInfo}}</p>
-                        <span v-if="hasNotice"></span>
-                    </div>
                     <!-- <ul class='tool-list' v-if='notice'>
                         <li @click="showNotice('已读信息已读信息已读信息已读信息已读信息已读信息')"><a><span class='notice-yes icon icon-circle'></span>已读信息已读信息已读信息</a></li>
                         <li><a href=""><span class='notice-no icon icon-circle'></span>未读信息未读信息未读信息</a></li>
@@ -49,8 +49,8 @@
         <div class='index-content'>
             <div :class="['left-nav',{'show':showNav}]">
                 <div class='touser-center'>
-                    <div @click='toAccount()' class='mybtn'><span class='icon icon-gift'></span>充值</div>
-                    <div @click='toAccount()' class='mybtn'><span class='icon icon-gift'></span>提现</div>
+                    <div @click='toAccount()' class='mybtn'><span class='icon icon-tasks'></span>充值</div>
+                    <div @click='toAccount()' class='mybtn'><span class='icon icon-briefcase'></span>提现</div>
                 </div>
                 <div class='nav-list-box'>
                     <ul>
@@ -59,9 +59,6 @@
                         </li>
                     </ul>
                 </div>
-                <!-- <div class='nav-toggle' @click='slide()'>
-                    <span :class="['icon-arrow-left',{'icon-arrow-right':slideToggle}]"></span>
-                </div> -->
             </div>
             <div class='left-nav-line'>
                 <ul>
@@ -71,7 +68,7 @@
                 </ul>
             </div>
             <div :class="['right-content',{'slide-left':slideToggle},{'set-toggle':setToggle}]">
-                <router-view @getNum='rcvMsg' @showNotice='showNotice'></router-view>
+                <router-view @getNum='rcvMsg' @showNotice='showNotice' @changeName='changeName'></router-view>
             </div>
         </div>
     </div>
@@ -103,7 +100,7 @@ export default {
     mounted(){
         this.$http.get('http://lgkj.chuangkegf.com/wuchuang/check.php').then((res)=>{
             if(res.body.code == 400){
-                this.$router.replace('/login');
+                //this.$router.replace('/login');
             }else if(res.body.code == 200){
                 if(!sessionStorage.getItem('login')){
                     sessionStorage.setItem('login',true);
@@ -147,42 +144,45 @@ export default {
             console.log(err);
         })
         /////
-        // this.$http.post('http://lgkj.chuangkegf.com/wuchuang/pagekind.php',{
-        //     kind:'gettab',
-        //     userkind:0
-        // },{emulateJSON:true}).then((res)=>{
-        //     if(res.body.code == 200){
-        //         var that = this;
-        //         res.body.data.map(function(item,index){
-        //             that.navList.push({
-        //                 title:item.pagename,
-        //                 icon:item.icon,
-        //                 isActive:false,
-        //                 path:item.pagepath,
-        //                 pageNum:item.pid
-        //             })
-        //         })
-        //         if(sessionStorage.getItem('pagenum')){
-        //             var pagenum = sessionStorage.getItem('pagenum');
-        //             that.navList.map(function(item,index){
-        //                 item.isActive = false;
-        //                 if(item.pageNum == pagenum){
-        //                     item.isActive = true;
-        //                 }
-        //             })
-        //         }else{
-        //             this.changePage(0,this.navList[0].path);
-        //         }
-        //     }
-        // },(err)=>{
-        //     console.log(err);
-        // })
-        // this.userName = localStorage.getItem('uname');
-        // this.userid = localStorage.getItem('userid');
-        // this.getNews();
+        this.$http.post('http://lgkj.chuangkegf.com/wuchuang/pagekind.php',{
+            kind:'gettab',
+            userkind:0
+        },{emulateJSON:true}).then((res)=>{
+            if(res.body.code == 200){
+                var that = this;
+                res.body.data.map(function(item,index){
+                    that.navList.push({
+                        title:item.pagename,
+                        icon:item.icon,
+                        isActive:false,
+                        path:item.pagepath,
+                        pageNum:item.pid
+                    })
+                })
+                if(sessionStorage.getItem('pagenum')){
+                    var pagenum = sessionStorage.getItem('pagenum');
+                    that.navList.map(function(item,index){
+                        item.isActive = false;
+                        if(item.pageNum == pagenum){
+                            item.isActive = true;
+                        }
+                    })
+                }else{
+                    this.changePage(0,this.navList[0].path);
+                }
+            }
+        },(err)=>{
+            console.log(err);
+        })
+        this.userName = localStorage.getItem('uname');
+        this.userid = localStorage.getItem('userid');
+        this.getNews();
         /////
     },
     methods:{
+        changeName(msg){
+            this.userName = msg;
+        },
         getNews(){
             this.$http.post('http://lgkj.chuangkegf.com/wuchuang/userinfo.php',{
                 kind:'getnews',

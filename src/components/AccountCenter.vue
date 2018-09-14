@@ -15,13 +15,13 @@
                     </div>
                     <ul class='pay-box'>
                         <li class='pay-item'>
-                            <h3 class='panel-title'><span class='icon icon-user' style='padding-right:10px;display:inline-block;font-size:16px;'></span>账户余额</h3>
+                            <h3 class='panel-title'><span class='icon icon-tasks' style='padding-right:10px;display:inline-block;font-size:16px;'></span>账户余额</h3>
                             <div class='main-pay-detail'>
                                 <span>{{pageData[0]}}</span><span class='pay-btn mybtn' @click='showModal(1)'>充值</span>
                             </div>
                         </li>
                         <li class='pay-item'>
-                            <h3 class='panel-title'><span class='icon icon-user' style='padding-right:10px;display:inline-block;font-size:16px;'></span>可提现金额</h3>
+                            <h3 class='panel-title'><span class='icon icon-briefcase' style='padding-right:10px;display:inline-block;font-size:16px;'></span>可提现金额</h3>
                             <div class='main-pay-detail'>
                                 <span>{{pageData[0]}}</span><span class='pay-btn mybtn' @click='showModal(2)'>提现</span>
                             </div>
@@ -32,16 +32,16 @@
                     <ul class='pay-card-box'>
                         <li class='pay-item'>
                             <h3 class='panel-title'>
-                                <span class='icon icon-user' style='padding-right:10px;display:inline-block;font-size:16px;'></span>
+                                <span class='icon icon-credit-card' style='padding-right:10px;display:inline-block;font-size:16px;'></span>
                                 我的银行卡
-                                <span class='pay-btn mybtn' @click='showModal(3)' v-if='!noCard'>解绑</span>
+                                <span class='pay-btn mybtn' @click='showModal(3)' v-if="pageData[2]!=''">解绑</span>
                             </h3>
-                            <div class='main-pay-detail' v-if='!noCard'>
+                            <div class='main-pay-detail' v-if="pageData[2]!=''">
                                 <span class='bank'>{{pageData[4]}}</span>
                                 <span class='bank'>{{pageData[3]}}</span>
                                 <span class='card-num'>{{pageData[2]}}</span>
                             </div>
-                            <div class='main-pay-detail' v-if='noCard' @click='showModal(6)'>
+                            <div class='main-pay-detail' v-if="pageData[2]==''" @click='showModal(6)'>
                                 <span class='icon icon-plus add-card'></span>
                             </div>
                         </li>
@@ -50,7 +50,7 @@
                 <div class='name-pay'>
                     <ul class='pay-card-box'>
                         <li class='pay-item'>
-                            <h3 class='panel-title'><span class='icon icon-user' style='padding-right:10px;display:inline-block;font-size:16px;'></span>商家账号</h3>
+                            <h3 class='panel-title'><span class='icon icon-credit-card' style='padding-right:10px;display:inline-block;font-size:16px;'></span>商家账号</h3>
                             <div class='main-pay-detail'>
                                 <span class='bank'>工商银行</span>
                                 <span class='card-num'>322331223245323442321</span>
@@ -59,7 +59,7 @@
                     </ul>
                 </div>
                 <div class='name-pay'>
-                    <h3 class='panel-title'><span class='icon icon-user' style='padding-right:10px;display:inline-block;font-size:16px;'></span>账号设置</h3>
+                    <h3 class='panel-title'><span class='icon icon-laptop' style='padding-right:10px;display:inline-block;font-size:16px;'></span>账号设置</h3>
                     <ul class='pay-card-box'>
                         <li class='set-item'>
                             <div class='set-item-left'>
@@ -97,9 +97,10 @@
                 <div class='panel-title'>{{currModalTitle}}</div>
                 <div class='modal-item'>
                     <p class='modal-notice'>{{currModaldus}}</p>
-                    <div class='input-pay' v-if='currModalKind == 0'><input type="text" maxlength="10"></div>
-                    <div class='input-pay' v-if='currModalKind == 1'><input type="text"> 元</div>
-                    <div class='input-pay' v-if='currModalKind == 2'><input type="text"> 元</div>
+                    <div class='input-pay' v-if='currModalKind == 0'><input type="text" maxlength="10" v-model="newName"></div>
+                    <div class='input-pay' v-if='currModalKind == 1'><input type="number" v-model="addMoney"> 元</div>
+                    <div class='input-pay' v-if='currModalKind == 2'><input type="number" v-model="getMoney"> 元</div>
+                    <div v-if='currModalKind == 3'></div>
                     <ul class='input-pwd' v-if='currModalKind == 4'>
                         <li><span>旧密码</span><input type="password" placeholder="请输入旧密码" maxlength="16"></li>
                         <li><span>新密码</span><input type="password" placeholder="请输入新密码" maxlength="16"></li>
@@ -111,12 +112,11 @@
                         <li><span>确认新密码</span><input type="password" placeholder="请确新密码" maxlength="16"></li>
                     </ul>
                     <ul class='input-pwd' v-if='currModalKind == 6'>
-                        <li><span>姓名</span><input type="text" placeholder="请输入真实姓名" maxlength="16"></li>
-                        <li><span>开户银行</span><input type="text" placeholder="请输入银行卡开户行" maxlength="64"></li>
-                        <li><span>银行卡号</span><input type="text" placeholder="请输入银行卡号" maxlength="32"></li>
+                        <li><span>姓名</span><input type="text" placeholder="请输入真实姓名" maxlength="16" v-model="cardName"></li>
+                        <li><span>开户银行</span><input type="text" placeholder="请输入银行卡开户行" maxlength="64" v-model="cardOpen"></li>
+                        <li><span>银行卡号</span><input type="text" placeholder="请输入银行卡号" maxlength="32" v-model="cardNum"></li>
                     </ul>
-                    <div v-if='currModalKind == 3'>
-                    </div>
+                    <div class='input-pay' v-if='currModalKind == 7'><input type="password"></div>
                 </div>
                 <div class='modal-btn-box'>
                     <span class='mybtn' @click='confirmModal(currModalKind)'>确定</span>
@@ -137,31 +137,39 @@ export default {
             currModalKind:1,
             modal:false,
             userName:'未登录',
+            userId:'',
             pageData:[],
-            noCard:true
+            newName:'',
+            addMoney:0,
+            getMoney:0,
+            cardNum:'',
+            cardName:'',
+            cardOpen:''
         }
     },
     mounted(){
         this.$emit('getNum',0);
-        var username = localStorage.getItem('uname');
-        var userid = localStorage.getItem('userid');
-        this.userName = username;
-        this.$http.post('http://lgkj.chuangkegf.com/wuchuang/userinfo.php',{
-            kind:'maininfo',
-            userid:userid,
-            username:username,
-        },{emulateJSON:true}).then((res)=>{
-            if(res.body.code == 200){
-                this.pageData = res.body.data;
-                if(this.pageData[5] == 0){
-                    this.noCard = true;
-                }
-            }
-        },(err)=>{
-            console.log(err);
-        })
+        this.userName = localStorage.getItem('uname');
+        this.userId = localStorage.getItem('userid');
+        this.refreshData();
     },
     methods:{
+        refreshData(){
+            this.$http.post('http://lgkj.chuangkegf.com/wuchuang/userinfo.php',{
+                kind:'maininfo',
+                userid:this.userId,
+                username:this.userName
+            },{emulateJSON:true}).then((res)=>{
+                if(res.body.code == 200){
+                    this.pageData = res.body.data;
+                    if(this.pageData[5] == 0){
+                        this.noCard = true;
+                    }
+                }
+            },(err)=>{
+                console.log(err);
+            })
+        },
         changeTab(index){
             this.toggleTab = index;
         },
@@ -180,14 +188,9 @@ export default {
                     this.currModaldus = '请首先使用绑定的银行卡转账到商家账户';
                     this.currModalKind = 1;
                     break;
-                case 2:
-                    this.currModalTitle = '提现';
-                    this.currModaldus = '请保证提现金额小于账户余额';
-                    this.currModalKind = 2;
-                    break;
                 case 3:
-                    this.currModalTitle = '银行卡绑定';
-                    this.currModaldus = '填写完整的银行卡信息';
+                    this.currModalTitle = '解绑银行卡';
+                    this.currModaldus = '解绑银行卡会导致后台无法正常处理您的充值或提现申请！';
                     this.currModalKind = 3;
                     break;
                 case 4:
@@ -204,6 +207,11 @@ export default {
                     this.currModalTitle = '添加银行卡';
                     this.currModaldus = '请输入准确信息';
                     this.currModalKind = 6;
+                    break;
+                case 7:
+                    this.currModalTitle = '资金密码';
+                    this.currModaldus = '请输入资金密码';
+                    this.currModalKind = 7;
                     break;
             }
             this.modal = true;
@@ -211,42 +219,125 @@ export default {
         confirmModal(kind){
             switch(kind){
                 case 0:
-                    this.currModalTitle = '修改昵称';
-                    this.currModaldus = '昵称不低于3个字符';
-                    this.currModalKind = 0;
+                    //修改昵称
+                    if(this.newName.length>=3){
+                        this.$http.post('http://lgkj.chuangkegf.com/wuchuang/userinfo.php',{
+                            kind:'changename',
+                            userid:this.userId,
+                            username:this.userName,
+                            newname:this.newName
+                        },{emulateJSON:true}).then((res)=>{
+                            if(res.body.code == 200){
+                                this.$emit('showNotice','修改成功');
+                                this.$emit('changeName',this.newName);
+                                this.userName = this.newName;
+                                localStorage.setItem('uname',this.userName);
+                                this.modal = false;
+                            }else{
+                                this.$emit('showNotice','修改失败');
+                            }
+                        },(err)=>{
+                            console.log(err);
+                        })
+                    }else{
+                       this.$emit('showNotice','昵称长度不足3个字符');
+                    }
                     break;
                 case 1:
-                    this.currModalTitle = '余额充值';
-                    this.currModaldus = '请首先使用绑定的银行卡转账到商家账户';
-                    this.currModalKind = 1;
+                    //充值
+                    if(this.addMoney>0){
+                        this.$http.post('http://lgkj.chuangkegf.com/wuchuang/userinfo.php',{
+                            kind:'addmoney',
+                            userid:this.userId,
+                            username:this.userName,
+                            addmoney:this.addMoney
+                        },{emulateJSON:true}).then((res)=>{
+                            if(res.body.code == 200){
+                                this.$emit('showNotice','申请已提交，待处理！ 如有疑问：请联系客服!');
+                                this.modal = false;
+                            }else{
+                                this.$emit('showNotice','申请失败，请重试！');
+                            }
+                        },(err)=>{
+                            console.log(err);
+                        })
+                    }else{
+                        this.$emit('showNotice','请输入充值金额');
+                    }
                     break;
                 case 2:
-                    this.currModalTitle = '提现';
-                    this.currModaldus = '请保证提现金额小于账户余额';
-                    this.currModalKind = 2;
+                    //提现
+                    if(this.getMoney <= parseFloat(this.pageData[0]) && this.getMoney>0){
+                        this.$http.post('http://lgkj.chuangkegf.com/wuchuang/userinfo.php',{
+                            kind:'getmoney',
+                            userid:this.userId,
+                            username:this.userName,
+                            getmoney:this.getMoney
+                        },{emulateJSON:true}).then((res)=>{
+                            if(res.body.code == 200){
+                                this.$emit('showNotice','申请已提交，待处理！ 如有疑问：请联系客服!');
+                                this.modal = false;
+                            }else{
+                                this.$emit('showNotice','申请失败，请重试！');
+                            }
+                        },(err)=>{
+                            console.log(err);
+                        })
+                    }else{
+                        this.$emit('showNotice','余额不足');
+                    }
                     break;
                 case 3:
-                    this.currModalTitle = '银行卡绑定';
-                    this.currModaldus = '填写完整的银行卡信息';
-                    this.currModalKind = 3;
+                    //解绑银行卡
+                    this.$http.post('http://lgkj.chuangkegf.com/wuchuang/userinfo.php',{
+                        kind:'removecard',
+                        userid:this.userId,
+                        username:this.userName
+                    },{emulateJSON:true}).then((res)=>{
+                        if(res.body.code == 200){
+                            this.$emit('showNotice','解绑成功！');
+                            this.modal = false;
+                        }else{
+                            this.$emit('showNotice','解绑失败！');
+                        }
+                    },(err)=>{
+                        console.log(err);
+                    })
                     break;
                 case 4:
-                    this.currModalTitle = '修改登录密码';
-                    this.currModaldus = '修改登录密码可以提升账户安全,不少于6个字符';
-                    this.currModalKind = 4;
                     break;
                 case 5:
-                    this.currModalTitle = '修改资金密码';
-                    this.currModaldus = '修改资金密码可以提升账户安全,不少于6个字符';
-                    this.currModalKind = 5;
                     break;
                 case 6:
-                    this.currModalTitle = '添加银行卡';
-                    this.currModaldus = '请输入准确信息';
-                    this.currModalKind = 6;
+                    //添加银行卡
+                    if(this.cardNum != '' && this.cardName != '' && this.cardOpen !=''){
+                        this.$http.post('http://lgkj.chuangkegf.com/wuchuang/userinfo.php',{
+                            kind:'addcard',
+                            userid:this.userId,
+                            username:this.userName,
+                            cardnum:this.cardNum,
+                            cardname:this.cardName,
+                            cardopen:this.cardOpen
+                        },{emulateJSON:true}).then((res)=>{
+                            if(res.body.code == 200){
+                                this.$emit('showNotice','银行卡已经绑定！');
+                                this.modal = false;
+                            }else{
+                                this.$emit('showNotice','绑定失败！');
+                            }
+                        },(err)=>{
+                            console.log(err);
+                        })
+                    }else{
+                        this.$emit('showNotice','请输入完整的银行卡相关信息');
+                    }
+                    break;
+                case 7:
+                    //验证资金密码
+                    
                     break;
             }
-            this.modal = false;
+            this.refreshData();
         }
     }
 }

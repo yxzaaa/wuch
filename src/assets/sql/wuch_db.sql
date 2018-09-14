@@ -25,6 +25,8 @@ create table userequest(
 	rid int primary key auto_increment,
 	rkind boolean not null,
 	rnum decimal(14,2) not null,
+	userid varchar(32) not null,
+	username varchar(32) not null,
 	rtime varchar(128) not null,
 	rstate boolean not null
 );

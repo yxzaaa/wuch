@@ -33,6 +33,7 @@
 .index-content{
     width:100%;
     height:calc(100% - 82px);
+    min-width: 1280px;
     display: flex;
     justify-content: flex-start;
     overflow: hidden;
@@ -153,7 +154,7 @@
     top:24px;
     right:8px;
     color:#fff;
-    background: #be1d2c;
+    background: #ff4200;
     width: 20px;
     height:20px;
     display: inline-block;
@@ -213,7 +214,7 @@
     color:#009944;
 }
 .tool-list>li>a>span.notice-no{
-    color:#be1d2c;
+    color:#ff4200;
 }
 .user-set{
     width:0px;
@@ -286,6 +287,7 @@
     display: flex;
     justify-content: flex-start;
     border-bottom:1px solid #252c35;
+    box-shadow: 0px 3px 5px rgba(0,0,0,.1);
 }
 .touser-center>div{
     width:50%;
@@ -300,9 +302,9 @@
 }
 .touser-center>div>span{
     font-size: 18px;
-    color:#be1d2c;
+    color:#ff4200;
     display: inline-block;
-    padding-right:5px;
+    padding-right:10px;
     vertical-align: middle;
 }
 .nav-list-box{
@@ -354,7 +356,7 @@
     width:100%;
     background: #252c35;
     color:#fff;
-    border-left:5px solid #be1d2c;
+    border-left:5px solid #ff4200;
 }
 .right-content.set-toggle{
     width:calc(100% - 486px);
@@ -411,7 +413,7 @@
     line-height: 42px;
     font-size: 15px;
     color:#676a6d;
-    padding:0px 20px;
+    padding:0px 15px;
     border-bottom:1px solid #eee;
     position: relative;
 }
@@ -435,7 +437,7 @@
     color:#fff !important;
 }
 .mybtn:hover{
-    background: #be1d2c;
+    background: #ff4200;
     box-shadow: 0px 5px 6px 0px rgba(0,0,0,.2);
     color:#fff;
 }
@@ -445,7 +447,7 @@
     position: fixed;
     top:10px;
     right:-310px;
-    z-index: 200;
+    z-index: 1000;
     overflow: hidden;
     background: rgba(37,44,53,0.9);
     padding:20px;
@@ -503,7 +505,7 @@
 .modal-notice{
     line-height:32px;
     font-size: 13px;
-    color:#be1d2c;
+    color:#ff4200;
 }
 .input-pay{
     padding:10px 0px;
@@ -544,7 +546,7 @@
 .toggle-icon{
     width:40px;
     height:40px;
-    background: #be1d2c;
+    background: #ff4200;
     box-shadow: 0px 3px 10px rgba(0,0,0,.2);
     font-size: 24px;
     color:#fff;
@@ -566,6 +568,9 @@
     height:100%;
 }
 @media screen and (max-width:640px){
+    .index-content{
+        min-width: 0px;
+    }
     .left-nav{
         position: fixed;
         top:0px;
