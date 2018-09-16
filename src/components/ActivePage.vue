@@ -264,7 +264,7 @@
                 <h3 class='panel-title'>中奖名单</h3>
                 <div class='user-list-box'>
                     <ul class='user-list'>
-                        <li>XXX<span>奖金:34.21</span></li>
+                        <li v-for="(item,index) in priceList" :key='index'>{{item.username}}<span>奖金:{{item.getpay}}元</span></li>
                     </ul>
                 </div>
             </div>
@@ -406,6 +406,7 @@ export default {
                 {expect:'000',opencode:'0,0,0,0,0'},
                 {expect:'000',opencode:'0,0,0,0,0'}
             ],
+            priceList:[],
             totalCount:0,
             totalPay:0,
             currOpenTime:1536506909768,
@@ -425,6 +426,7 @@ export default {
     mounted(){
         this.$emit('getNum',sessionStorage.getItem('pagenum'));
         this.getPageData();
+        this.getPriceList();
     },
     watch: {
         //监听路由，只要路由有变化(路径，参数等变化)都有执行下面的函数，你可以
@@ -432,6 +434,7 @@ export default {
             handler: function (val, oldVal) {
                 this.clearAllData();
                 this.getPageData();
+                this.getPriceList();
                 //created事件触发的函数可以在这里写...  
                 //都是componentA组件，声明周期还在，改变不了
             },
@@ -461,6 +464,20 @@ export default {
                             this.getPageData();
                         },1000)
                     }
+                }
+            })
+        },
+        getPriceList(){
+            this.pageId = this.$route.query.pageid;
+            this.pageName = this.$route.query.pagename;
+            this.$http.post('http://lgkj.chuangkegf.com/wuchuang/getpageinfo.php',{
+                kind:'getpricelist',
+                pageid:this.pageId,
+                pagename:this.pageName
+            },{emulateJSON:true}).then((res)=>{
+                console.log(res);
+                if(res.body.code == 200){
+                   this.priceList = res.body.data;
                 }
             })
         },
@@ -523,6 +540,7 @@ export default {
                     this.timer = null;
                     this.$emit('showNotice',this.pageName+','+this.expect+'期已开奖，投注时请注意倒计时！');
                     this.getPageData();
+                    this.getPriceList();
                 }else{
                     this.currHour = hour>=10?hour:'0'+hour;
                     this.currMin = min>=10?min:'0'+min;
@@ -548,7 +566,7 @@ export default {
                     pagepay:data.pagepay,
                 })
             }else{
-                alert('号码不完整，请重新选择！');
+                this.$emit('showNotice','号码不完整，请重新选择');
             }
             this.resList.map(function(item,index){
                 tcount += parseInt(item.pagecount);
@@ -565,7 +583,6 @@ export default {
                 username:localStorage.getItem("uname"),
                 pay:this.totalPay
             },{emulateJSON:true}).then((res)=>{
-                console.log(res.body);
                 if(res.body.code == 200){
                     var that = this;
                     var allSucc = true;
@@ -592,6 +609,7 @@ export default {
                     if(allSucc == true){
                         this.$emit('showNotice','投注成功');
                         this.clearAllData();
+                        this.getPriceList();
                     }
                 }else if(res.body.code == 300){
                     this.$emit('showNotice','您的余额不足，请及时充值');
@@ -820,6 +838,7 @@ export default {
                 pagebei:1,
                 pagepay:0
             };
+            this.priceList = [];
             this.resList=[];
             this.totalCount = 0;
             this.totalPay = 0;

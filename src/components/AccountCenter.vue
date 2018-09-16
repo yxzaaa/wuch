@@ -23,7 +23,7 @@
                         <li class='pay-item'>
                             <h3 class='panel-title'><span class='icon icon-briefcase' style='padding-right:10px;display:inline-block;font-size:16px;'></span>可提现金额</h3>
                             <div class='main-pay-detail'>
-                                <span>{{pageData[0]}}</span><span class='pay-btn mybtn' @click='showModal(2)'>提现</span>
+                                <span>{{pageData[0]}}</span><span class='pay-btn mybtn' @click='showModal(7)'>提现</span>
                             </div>
                         </li>
                     </ul>
@@ -102,21 +102,21 @@
                     <div class='input-pay' v-if='currModalKind == 2'><input type="number" v-model="getMoney"> 元</div>
                     <div v-if='currModalKind == 3'></div>
                     <ul class='input-pwd' v-if='currModalKind == 4'>
-                        <li><span>旧密码</span><input type="password" placeholder="请输入旧密码" maxlength="16"></li>
-                        <li><span>新密码</span><input type="password" placeholder="请输入新密码" maxlength="16"></li>
-                        <li><span>确认新密码</span><input type="password" placeholder="请确认新密码" maxlength="16"></li>
+                        <li><span>旧密码</span><input type="password" placeholder="请输入旧密码" maxlength="16" v-model="oldUserPwd"></li>
+                        <li><span>新密码</span><input type="password" placeholder="请输入新密码" maxlength="16" v-model="newUserPwd"></li>
+                        <li><span>确认新密码</span><input type="password" placeholder="请确认新密码" maxlength="16" v-model="cNewUserPwd"></li>
                     </ul>
                     <ul class='input-pwd' v-if='currModalKind == 5'>
-                        <li><span>旧密码</span><input type="password" placeholder="请输入旧密码" maxlength="16"></li>
-                        <li><span>新密码</span><input type="password" placeholder="请输入新密码" maxlength="16"></li>
-                        <li><span>确认新密码</span><input type="password" placeholder="请确新密码" maxlength="16"></li>
+                        <li><span>旧密码</span><input type="password" placeholder="请输入旧密码" maxlength="16" v-model="oldMoneyPwd"></li>
+                        <li><span>新密码</span><input type="password" placeholder="请输入新密码" maxlength="16" v-model="newMoneyPwd"></li>
+                        <li><span>确认新密码</span><input type="password" placeholder="请确新密码" maxlength="16" v-model="cNewMoneyPwd"></li>
                     </ul>
                     <ul class='input-pwd' v-if='currModalKind == 6'>
                         <li><span>姓名</span><input type="text" placeholder="请输入真实姓名" maxlength="16" v-model="cardName"></li>
                         <li><span>开户银行</span><input type="text" placeholder="请输入银行卡开户行" maxlength="64" v-model="cardOpen"></li>
                         <li><span>银行卡号</span><input type="text" placeholder="请输入银行卡号" maxlength="32" v-model="cardNum"></li>
                     </ul>
-                    <div class='input-pay' v-if='currModalKind == 7'><input type="password"></div>
+                    <div class='input-pay' v-if='currModalKind == 7'><input type="password" v-model="moneyPwd"/></div>
                 </div>
                 <div class='modal-btn-box'>
                     <span class='mybtn' @click='confirmModal(currModalKind)'>确定</span>
@@ -144,14 +144,31 @@ export default {
             getMoney:0,
             cardNum:'',
             cardName:'',
-            cardOpen:''
+            cardOpen:'',
+            moneyPwd:'',
+            oldUserPwd:'',
+            newUserPwd:'',
+            cNewUserPwd:'',
+            oldMoneyPwd:'',
+            newMoneyPwd:'',
+            cNewMoneyPwd:''
         }
     },
     mounted(){
+        this.toggleTab = this.$route.query.tab;
         this.$emit('getNum',0);
         this.userName = localStorage.getItem('uname');
         this.userId = localStorage.getItem('userid');
         this.refreshData();
+    },
+    watch: {
+        //监听路由，只要路由有变化(路径，参数等变化)都有执行下面的函数，你可以
+        $route: {
+            handler: function (val, oldVal) {
+                this.toggleTab = this.$route.query.tab;
+            },
+            deep: true
+        }
     },
     methods:{
         refreshData(){
@@ -182,39 +199,59 @@ export default {
                     this.currModalTitle = '修改昵称';
                     this.currModaldus = '昵称不低于3个字符';
                     this.currModalKind = 0;
+                    this.modal = true;
                     break;
                 case 1:
-                    this.currModalTitle = '余额充值';
-                    this.currModaldus = '请首先使用绑定的银行卡转账到商家账户';
-                    this.currModalKind = 1;
+                    if(this.pageData[2] != ''){
+                        this.currModalTitle = '余额充值';
+                        this.currModaldus = '请首先使用绑定的银行卡转账到商家账户';
+                        this.currModalKind = 1;
+                        this.modal = true;
+                    }else{
+                        this.$emit('showNotice','您尚未绑定银行卡');
+                    }
+                    break;
+                case 2:
+                    this.currModalTitle = '提现';
+                    this.currModaldus = '提现金额需少于余额';
+                    this.currModalKind = 2;
+                    this.modal = true;
                     break;
                 case 3:
                     this.currModalTitle = '解绑银行卡';
                     this.currModaldus = '解绑银行卡会导致后台无法正常处理您的充值或提现申请！';
                     this.currModalKind = 3;
+                    this.modal = true;
                     break;
                 case 4:
                     this.currModalTitle = '修改登录密码';
                     this.currModaldus = '修改登录密码可以提升账户安全,不少于6个字符';
                     this.currModalKind = 4;
+                    this.modal = true;
                     break;
                 case 5:
                     this.currModalTitle = '修改资金密码';
                     this.currModaldus = '修改资金密码可以提升账户安全,不少于6个字符';
                     this.currModalKind = 5;
+                    this.modal = true;
                     break;
                 case 6:
                     this.currModalTitle = '添加银行卡';
                     this.currModaldus = '请输入准确信息';
                     this.currModalKind = 6;
+                    this.modal = true;
                     break;
                 case 7:
-                    this.currModalTitle = '资金密码';
-                    this.currModaldus = '请输入资金密码';
-                    this.currModalKind = 7;
+                    if(this.pageData[2] != ''){
+                        this.currModalTitle = '资金密码';
+                        this.currModaldus = '请输入资金密码';
+                        this.currModalKind = 7;
+                        this.modal = true;
+                    }else{
+                        this.$emit('showNotice','您尚未绑定银行卡');
+                    }
                     break;
             }
-            this.modal = true;
         },
         confirmModal(kind){
             switch(kind){
@@ -233,6 +270,7 @@ export default {
                                 this.userName = this.newName;
                                 localStorage.setItem('uname',this.userName);
                                 this.modal = false;
+                                this.refreshData();
                             }else{
                                 this.$emit('showNotice','修改失败');
                             }
@@ -250,11 +288,13 @@ export default {
                             kind:'addmoney',
                             userid:this.userId,
                             username:this.userName,
-                            addmoney:this.addMoney
+                            addmoney:this.addMoney,
+                            cardnum:this.pageData[2]
                         },{emulateJSON:true}).then((res)=>{
                             if(res.body.code == 200){
                                 this.$emit('showNotice','申请已提交，待处理！ 如有疑问：请联系客服!');
                                 this.modal = false;
+                                this.refreshData();
                             }else{
                                 this.$emit('showNotice','申请失败，请重试！');
                             }
@@ -272,11 +312,13 @@ export default {
                             kind:'getmoney',
                             userid:this.userId,
                             username:this.userName,
-                            getmoney:this.getMoney
+                            getmoney:this.getMoney,
+                            cardnum:this.pageData[2]
                         },{emulateJSON:true}).then((res)=>{
                             if(res.body.code == 200){
                                 this.$emit('showNotice','申请已提交，待处理！ 如有疑问：请联系客服!');
                                 this.modal = false;
+                                this.refreshData();
                             }else{
                                 this.$emit('showNotice','申请失败，请重试！');
                             }
@@ -297,6 +339,7 @@ export default {
                         if(res.body.code == 200){
                             this.$emit('showNotice','解绑成功！');
                             this.modal = false;
+                            this.refreshData();
                         }else{
                             this.$emit('showNotice','解绑失败！');
                         }
@@ -305,8 +348,54 @@ export default {
                     })
                     break;
                 case 4:
+                //修改登录密码
+                    if(this.oldUserPwd.length>=6 && this.newUserPwd.length>=6 && this.cNewUserPwd.length>=6
+                    && this.newUserPwd == this.cNewUserPwd){
+                        this.$http.post('http://lgkj.chuangkegf.com/wuchuang/userinfo.php',{
+                            kind:'changeuserpwd',
+                            userid:this.userId,
+                            username:this.userName,
+                            newpwd:this.newUserPwd,
+                            oldpwd:this.oldUserPwd
+                        },{emulateJSON:true}).then((res)=>{
+                            if(res.body.code == 200){
+                                this.$emit('showNotice','登录密码，修改成功');
+                                this.modal = false;
+                                this.refreshData();
+                            }else if(res.body.code == 300){
+                                this.$emit('showNotice','修改失败');
+                            }else if(res.body.code == 400){
+                                this.$emit('showNotice','登录密码错误');
+                            }
+                        },(err)=>{
+                            console.log(err);
+                        })
+                    }
                     break;
                 case 5:
+                    if(this.oldMoneyPwd.length>=6 && this.newMoneyPwd.length>=6 && this.cNewMoneyPwd.length>=6
+                    && this.newMoneyPwd == this.cNewMoneyPwd){
+                        this.$http.post('http://lgkj.chuangkegf.com/wuchuang/userinfo.php',{
+                            kind:'changemoneypwd',
+                            userid:this.userId,
+                            username:this.userName,
+                            newpwd:this.newMoneyPwd,
+                            oldpwd:this.oldMoneyPwd
+                        },{emulateJSON:true}).then((res)=>{
+                            console.log(res);
+                            if(res.body.code == 200){
+                                this.$emit('showNotice','资金密码，修改成功');
+                                this.modal = false;
+                                this.refreshData();
+                            }else if(res.body.code == 300){
+                                this.$emit('showNotice','修改失败');
+                            }else if(res.body.code == 400){
+                                this.$emit('showNotice','资金密码错误');
+                            }
+                        },(err)=>{
+                            console.log(err);
+                        })
+                    }
                     break;
                 case 6:
                     //添加银行卡
@@ -322,6 +411,7 @@ export default {
                             if(res.body.code == 200){
                                 this.$emit('showNotice','银行卡已经绑定！');
                                 this.modal = false;
+                                this.refreshData();
                             }else{
                                 this.$emit('showNotice','绑定失败！');
                             }
@@ -334,10 +424,24 @@ export default {
                     break;
                 case 7:
                     //验证资金密码
-                    
+                    if(this.moneyPwd.length>=6){
+                        this.$http.post('http://lgkj.chuangkegf.com/wuchuang/userinfo.php',{
+                            kind:'checkpwd',
+                            userid:this.userId,
+                            username:this.userName,
+                            moneypwd:this.moneyPwd
+                        },{emulateJSON:true}).then((res)=>{
+                            if(res.body.code == 200){
+                                this.showModal(2);
+                            }else{
+                                this.$emit('showNotice','资金密码错误！');
+                            }
+                        },(err)=>{
+                            console.log(err);
+                        })
+                    }
                     break;
             }
-            this.refreshData();
         }
     }
 }

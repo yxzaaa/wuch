@@ -27,6 +27,7 @@ create table userequest(
 	rnum decimal(14,2) not null,
 	userid varchar(32) not null,
 	username varchar(32) not null,
+	cardnum varchar(32) not null,
 	rtime varchar(128) not null,
 	rstate boolean not null
 );
@@ -97,5 +98,8 @@ create table news(
 	userid varchar(64) not null,
 	username varchar(64) not null,
 	new varchar(256) not null,
+	pagename varchar(32) not null,
+	expect varchar(64) not null,
+	getpay decimal(14,2) not null,
 	newstate boolean not null
 );

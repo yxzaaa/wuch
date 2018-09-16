@@ -13,8 +13,8 @@
             </ul>
         </div>
         <div class='to-center panel'>
-            <div @click='toAccount()' class='mybtn'><span class='icon icon-gift'></span>充值</div>
-            <div @click='toAccount()' class='mybtn'><span class='icon icon-gift'></span>提现</div>
+            <div @click='toAccount(1)' class='mybtn'><span class='icon icon-tasks'></span>充值</div>
+            <div @click='toAccount(1)' class='mybtn'><span class='icon icon-briefcase'></span>提现</div>
         </div>
         <div class='nav-btns-box panel'>
             <h3 class='panel-title'>热门彩种</h3>
@@ -63,15 +63,15 @@ export default {
             slideData:[
                 {
                     isActive:true,
-                    src:'/static/img/index-ban.png',
+                    src:'./static/img/index-ban.png',
                 },
                 {
                     isActive:false,
-                    src:'/static/img/index-ban1.png',
+                    src:'./static/img/index-ban1.png',
                 },
                 {
                     isActive:false,
-                    src:'/static/img/index-ban1.png',
+                    src:'./static/img/index-ban1.png',
                 },
             ],
             slideWidth:0,
@@ -130,8 +130,13 @@ export default {
         })
     },
     methods:{
-        toAccount(){
-            this.$router.push({path:'/account'});
+        toAccount(index){
+            this.$router.push({
+                path:'/account',
+                query:{
+                    tab:index
+                }
+            });
             this.help = false;
             this.user = false;
         },

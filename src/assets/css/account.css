@@ -5,19 +5,22 @@
 }
 .center-tab>li{
     width:50%;
-    line-height: 50px;
+    line-height: 42px;
     text-align: center;
     display: inline-block;
-    font-size: 16px;
+    font-size: 14px;
     color: #777;
     cursor: pointer;
     box-sizing: border-box;
     border-top:2px solid #fff;
+    border-bottom:1px solid #eee;
+    border-left:1px solid #eee;
 }
 .center-tab>li.active{
     background: #fafafa;
-    color:#ff4200;
-    border-top:2px solid #ff4200;
+    color:#d81e06;
+    border-top:2px solid #d81e06;
+    border-bottom:1px solid transparent;
 }
 .center-item-box{
     background: #fafafa;
@@ -32,7 +35,7 @@
     font-size:14px;color:#777;line-height:22px;
 }
 .name-box>div>span{
-    font-size:14px;color:#ff4200;line-height:22px;display:inline-block;margin-left:5px;cursor: pointer;
+    font-size:14px;color:#d81e06;line-height:22px;display:inline-block;margin-left:5px;cursor: pointer;
 }
 .name-pay{
     width:100%;
@@ -92,7 +95,7 @@
 }
 .name-pay>.pay-card-box .card-num{
     font-size: 18px;
-    color:#ff4200;
+    color:#d81e06;
     font-weight: bold;
     padding-right:10px;
 }
@@ -106,7 +109,7 @@
     width:80px;
     height:50px;
     font-size: 32px;
-    color:#ff4200;
+    color:#d81e06;
     line-height: 50px;
     display: inline-block;
     text-align: center;
@@ -143,7 +146,7 @@
     cursor: pointer;
 }
 .set-item-right:hover{
-    background: #ff4200;
+    background: #d81e06;
     color:#fff;
     border:1px solid transparent;
 }

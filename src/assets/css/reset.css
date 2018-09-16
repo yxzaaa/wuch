@@ -121,3 +121,7 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
 	color:#aaa;
 
 }
+input:focus{
+	outline: none;
+	border:1px solid #d81e06 !important;
+}
