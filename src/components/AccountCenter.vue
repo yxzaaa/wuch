@@ -89,7 +89,38 @@
                 </div>
             </div>
             <div class='center-item-box' v-if='toggleTab == 2'>
-                
+                <div class='order-tab-box'>
+                    <div :class="['order-tab',{'active':orderTab == 1}]">我的投注</div>
+                    <div :class="['order-tab',{'active':orderTab == 2}]">我的收益</div>
+                </div>
+                <div class='order-list'>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>投注彩种</th>
+                                <th>投注期号</th>
+                                <th>投注玩法</th>
+                                <th>投注模式</th>
+                                <th>投注倍数</th>
+                                <th>投注金额（元）</th>
+                                <th>中奖金额（元）</th>
+                                <th>订单状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item,index) in listData" :key='index'>
+                                <td>{{item.pagename}}</td>
+                                <td>{{item.expect}}</td>
+                                <td>{{item.playname}}</td>
+                                <td>{{item.playkind == 1?'元':(item.playkind == 0.1?'角':'分')}}</td>
+                                <td>{{item.pagebei}}</td>
+                                <td>{{item.pagepay}}</td>
+                                <td>{{item.pageget}}</td>
+                                <td>{{item.pagestate == 1?'已完成':'未完成'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <div class='modal-content' v-if='modal'>
@@ -132,6 +163,7 @@ export default {
     data(){
         return{
             toggleTab:1,
+            orderTab:1,
             currModalTitle:'充值',
             currModaldus:'',
             currModalKind:1,
@@ -139,6 +171,8 @@ export default {
             userName:'未登录',
             userId:'',
             pageData:[],
+            listData:[],
+            payData:[],
             newName:'',
             addMoney:0,
             getMoney:0,
@@ -160,6 +194,7 @@ export default {
         this.userName = localStorage.getItem('uname');
         this.userId = localStorage.getItem('userid');
         this.refreshData();
+        this.getListData();
     },
     watch: {
         //监听路由，只要路由有变化(路径，参数等变化)都有执行下面的函数，你可以
@@ -182,6 +217,19 @@ export default {
                     if(this.pageData[5] == 0){
                         this.noCard = true;
                     }
+                }
+            },(err)=>{
+                console.log(err);
+            })
+        },
+        getListData(){
+            this.$http.post('http://lgkj.chuangkegf.com/wuchuang/pagekind.php',{
+                kind:'gethis',
+                userid:this.userId,
+                username:this.userName
+            },{emulateJSON:true}).then((res)=>{
+                if(res.body.code == 200){
+                    this.listData = res.body.data;
                 }
             },(err)=>{
                 console.log(err);
