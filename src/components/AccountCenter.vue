@@ -123,17 +123,17 @@
                 </div>
                 <div class='order-m-list'>
                     <ul>
-                        <li v-for='(item,index) in listData' :key='index'>
-                            <div>{{item.pagename}}</div>
-                            <div>第<span>{{item.pagename}}</span>期</div>
-                            <div>
-                                <span>{{item.playname}}</span>
-                                <span>{{item.playkind == 1?'元':(item.playkind == 0.1?'角':'分')}}</span>
-                                <span>{{item.pagebei}}</span>
+                        <li v-for='(item,index) in listData' :key='index' :class="{'succ':item.pagestate == 1}">
+                            <div class='m-pagename'>{{item.pagename}}</div>
+                            <div class='m-expect'>第<span>{{item.expect}}</span>期</div>
+                            <div class='m-kind'>
+                                <span>玩法：{{item.playname}}</span>
+                                <span>模式：{{item.playkind == 1?'元':(item.playkind == 0.1?'角':'分')}}</span>
+                                <span>倍数：{{item.pagebei}}</span>
                             </div>
-                            <div>
-                                <span>{{item.pagepay}}</span>
-                                <span>{{item.pageget}}</span>
+                            <div class='m-pay'>
+                                <span>支出：{{item.pagepay}}元</span>
+                                <span>收益：{{item.pageget}}元</span>
                             </div>
                         </li>
                     </ul>
