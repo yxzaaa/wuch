@@ -121,6 +121,23 @@
                         </tbody>
                     </table>
                 </div>
+                <div class='order-m-list'>
+                    <ul>
+                        <li v-for='(item,index) in listData' :key='index'>
+                            <div>{{item.pagename}}</div>
+                            <div>第<span>{{item.pagename}}</span>期</div>
+                            <div>
+                                <span>{{item.playname}}</span>
+                                <span>{{item.playkind == 1?'元':(item.playkind == 0.1?'角':'分')}}</span>
+                                <span>{{item.pagebei}}</span>
+                            </div>
+                            <div>
+                                <span>{{item.pagepay}}</span>
+                                <span>{{item.pageget}}</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class='modal-content' v-if='modal'>
@@ -197,7 +214,6 @@ export default {
         this.getListData();
     },
     watch: {
-        //监听路由，只要路由有变化(路径，参数等变化)都有执行下面的函数，你可以
         $route: {
             handler: function (val, oldVal) {
                 this.toggleTab = this.$route.query.tab;

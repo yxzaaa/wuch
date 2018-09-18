@@ -203,6 +203,39 @@
 .order-list>table>tbody>tr>td{
     padding:15px;
 }
+.order-m-list{
+    width: 100%;
+    padding:20px;
+    display: none;
+}
+.order-m-list>ul{
+    width:100%;
+}
+.order-m-list>ul>li{
+    width:100%;
+    border-radius: 5px;
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,.14);
+    background: #fff;
+    padding:10px;
+}
+.order-m-list>ul>li>div{
+    width:100%;
+    line-height: 32px;
+    text-align: center;
+    font-size: 14px;
+}
+.order-m-list>ul>li>div:first-child{
+    color:#d81e06; 
+}
+.order-m-list>ul>li>div:ntn-child(2){
+    color:#d81e06; 
+}
+.order-m-list>ul>li>div:nth-child(3){
+    color:#d81e06; 
+}
+.order-m-list>ul>li>div:last-child{
+    color:#d81e06; 
+}
 @media screen and (max-width:640px){
     .name-pay>.name-box{
         width:100%;
@@ -213,5 +246,11 @@
     }
     .pay-box>.pay-item{
         border-left:0px;
+    }
+    order-m-list{
+        display: block;
+    }
+    order-list{
+        display: none;
     }
 }
