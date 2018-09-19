@@ -90,10 +90,10 @@
             </div>
             <div class='center-item-box' v-if='toggleTab == 2'>
                 <div class='order-tab-box'>
-                    <div :class="['order-tab',{'active':orderTab == 1}]">我的投注</div>
-                    <div :class="['order-tab',{'active':orderTab == 2}]">我的收益</div>
+                    <div :class="['order-tab',{'active':orderTab == 1}]" @click='changeOrderTab(1)'>我的投注</div>
+                    <div :class="['order-tab',{'active':orderTab == 2}]" @click='changeOrderTab(2)'>我的收益</div>
                 </div>
-                <div class='order-list'>
+                <div class='order-list' v-if='orderTab == 1'>
                     <table>
                         <thead>
                             <tr>
@@ -121,7 +121,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class='order-m-list'>
+                <div class='order-m-list' v-if='orderTab == 1'>
                     <ul>
                         <li v-for='(item,index) in listData' :key='index' :class="{'succ':item.pagestate == 1}">
                             <div class='m-pagename'>{{item.pagename}}</div>
@@ -138,6 +138,7 @@
                         </li>
                     </ul>
                 </div>
+                <div class='order-list' v-if='orderTab == 2'>111</div>
             </div>
         </div>
         <div class='modal-content' v-if='modal'>
@@ -222,6 +223,9 @@ export default {
         }
     },
     methods:{
+        changeOrderTab(index){
+            this.orderTab = index;
+        },
         refreshData(){
             this.$http.post('http://lgkj.chuangkegf.com/wuchuang/userinfo.php',{
                 kind:'maininfo',
