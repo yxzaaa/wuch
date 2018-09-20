@@ -94,6 +94,7 @@
                     <div :class="['order-tab',{'active':orderTab == 2}]" @click='changeOrderTab(2)'>我的收益</div>
                 </div>
                 <div class='order-list' v-if='orderTab == 1'>
+                <!-- 我的投注 -->
                     <table>
                         <thead>
                             <tr>
@@ -120,6 +121,19 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class='page-tool btn-group'>
+                        <div><select type="text" v-model="pagesize">
+                            <option>10</option>
+                            <option>20</option>
+                            <option>30</option>
+                            </select> 条</div>
+                        <div class='show-num'>第 {{currPage}} 页</div>
+                        <div class='show-num'>共 {{totalPage}} 页</div>
+                        <div class='btn btn-primary' @click='prevPage()'>上一页</div>
+                        <div class='btn btn-info' @click='firstPage()'>首页</div>
+                        <div class='btn btn-warning' @click='lastPage()'>末页</div>
+                        <div class='btn btn-primary' @click='nextPage()'>下一页</div>
+                    </div>
                 </div>
                 <div class='order-m-list' v-if='orderTab == 1'>
                     <ul>
@@ -138,7 +152,39 @@
                         </li>
                     </ul>
                 </div>
-                <div class='order-list' v-if='orderTab == 2'>111</div>
+                <div class='order-list' v-if='orderTab == 2'>
+                    <!-- 彩票报表 -->
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>彩种</th>
+                                <th>开奖期号</th>
+                                <th>开奖号码</th>
+                                <th>开奖时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item,index) in hisData" :key='index'>
+                                <td>{{item.pagename}}</td>
+                                <td>{{item.expect}}</td>
+                                <td>{{item.opencode}}</td>
+                                <td>{{item.opentime}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class='order-m-list' v-if='orderTab == 2'>
+                    <ul>
+                        <li v-for='(item,index) in listData' :key='index' :class="{'succ':item.pagestate == 1}">
+                            <div class='m-pagename'>{{item.pagename}}</div>
+                            <div class='m-expect'>第<span>{{item.expect}}</span>期</div>
+                            <div class='m-expect'>开奖号码<span>{{item.opencode}}</span></div>
+                            <div class='m-pay'>
+                                <span>开奖时间：{{item.opentime}}</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class='modal-content' v-if='modal'>
@@ -203,7 +249,12 @@ export default {
             cNewUserPwd:'',
             oldMoneyPwd:'',
             newMoneyPwd:'',
-            cNewMoneyPwd:''
+            cNewMoneyPwd:'',
+            startpage:0,
+            pagesize:10,
+            totalPage:0,
+            currPage:1,
+            totalDataCount:0,
         }
     },
     mounted(){
@@ -213,6 +264,7 @@ export default {
         this.userId = localStorage.getItem('userid');
         this.refreshData();
         this.getListData();
+        this.getHisData();
     },
     watch: {
         $route: {
@@ -247,6 +299,17 @@ export default {
                 kind:'gethis',
                 userid:this.userId,
                 username:this.userName
+            },{emulateJSON:true}).then((res)=>{
+                if(res.body.code == 200){
+                    this.listData = res.body.data;
+                }
+            },(err)=>{
+                console.log(err);
+            })
+        },
+        getHisData(){
+            this.$http.post('http://lgkj.chuangkegf.com/wuchuang/pagekind.php',{
+                kind:'getpagehis'
             },{emulateJSON:true}).then((res)=>{
                 if(res.body.code == 200){
                     this.listData = res.body.data;
@@ -510,6 +573,30 @@ export default {
                     }
                     break;
             }
+        },
+        nextPage(){
+            if(this.currPage<this.totalPage){
+                this.startpage += this.pagesize;
+                this.changePage();
+                this.currPage++;
+            }
+        },
+        prevPage(){
+            if(this.currPage>1){
+                this.startpage -= this.pagesize;
+                this.changePage();
+                this.currPage--;
+            }
+        },
+        firstPage(){
+            this.startpage = 0;
+            this.changePage();
+            this.currPage = 1;
+        },
+        lastPage(){
+            this.startpage = this.pagesize*(this.totalPage-1);
+            this.changePage();
+            this.currPage = this.totalPage;
         }
     }
 }

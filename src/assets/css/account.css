@@ -260,6 +260,24 @@
     padding:0px 5px;
     font-size: 14px;
 }
+.page-tool{
+    width:100%;
+    height:50px;
+    background: #fff;
+    padding:10px;
+    display: flex;
+    justify-content: flex-end;
+}
+.page-tool>div{
+    width:70px;
+    line-height: 30px;
+    padding:0px;
+    cursor: pointer;
+    font-size: 0.6em;
+}
+.show-num{
+    font-size: 0.8em;
+}
 @media screen and (max-width:640px){
     .name-pay>.name-box{
         width:100%;
