@@ -91,7 +91,7 @@
             <div class='center-item-box' v-if='toggleTab == 2'>
                 <div class='order-tab-box'>
                     <div :class="['order-tab',{'active':orderTab == 1}]" @click='changeOrderTab(1)'>我的投注</div>
-                    <div :class="['order-tab',{'active':orderTab == 2}]" @click='changeOrderTab(2)'>我的收益</div>
+                    <div :class="['order-tab',{'active':orderTab == 2}]" @click='changeOrderTab(2)'>彩票报表</div>
                 </div>
                 <div class='order-list' v-if='orderTab == 1'>
                 <!-- 我的投注 -->
@@ -172,13 +172,26 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class='page-tool btn-group'>
+                        <div><select type="text" v-model="pagesize">
+                            <option>10</option>
+                            <option>20</option>
+                            <option>30</option>
+                            </select> 条</div>
+                        <div class='show-num'>第 {{currPage}} 页</div>
+                        <div class='show-num'>共 {{totalPage}} 页</div>
+                        <div class='btn btn-primary' @click='prevPage()'>上一页</div>
+                        <div class='btn btn-info' @click='firstPage()'>首页</div>
+                        <div class='btn btn-warning' @click='lastPage()'>末页</div>
+                        <div class='btn btn-primary' @click='nextPage()'>下一页</div>
+                    </div>
                 </div>
                 <div class='order-m-list' v-if='orderTab == 2'>
                     <ul>
-                        <li v-for='(item,index) in listData' :key='index' :class="{'succ':item.pagestate == 1}">
+                        <li v-for='(item,index) in hisData' :key='index' :class="{'succ':item.pagestate == 1}">
                             <div class='m-pagename'>{{item.pagename}}</div>
                             <div class='m-expect'>第<span>{{item.expect}}</span>期</div>
-                            <div class='m-expect'>开奖号码<span>{{item.opencode}}</span></div>
+                            <div class='m-expect'>开奖号码：<span>{{item.opencode}}</span></div>
                             <div class='m-pay'>
                                 <span>开奖时间：{{item.opentime}}</span>
                             </div>
@@ -236,6 +249,7 @@ export default {
             userId:'',
             pageData:[],
             listData:[],
+            hisData:[],
             payData:[],
             newName:'',
             addMoney:0,
@@ -264,7 +278,6 @@ export default {
         this.userId = localStorage.getItem('userid');
         this.refreshData();
         this.getListData();
-        this.getHisData();
     },
     watch: {
         $route: {
@@ -272,11 +285,23 @@ export default {
                 this.toggleTab = this.$route.query.tab;
             },
             deep: true
+        },
+        pagesize:{
+            handler:function(val,oldVal){
+                this.currPage = 1;
+                this.startpage = 0;
+                this.pagesize = parseInt(val);
+                this.orderTab == 1?this.getListData():this.getHisData();
+            }
         }
     },
     methods:{
         changeOrderTab(index){
             this.orderTab = index;
+            this.currPage = 1;
+            this.pagesize = 10;
+            this.startpage = 0;
+            this.orderTab == 1?this.getListData():this.getHisData();
         },
         refreshData(){
             this.$http.post('http://lgkj.chuangkegf.com/wuchuang/userinfo.php',{
@@ -296,12 +321,26 @@ export default {
         },
         getListData(){
             this.$http.post('http://lgkj.chuangkegf.com/wuchuang/pagekind.php',{
-                kind:'gethis',
+                kind:'gethiscount',
                 userid:this.userId,
                 username:this.userName
             },{emulateJSON:true}).then((res)=>{
                 if(res.body.code == 200){
-                    this.listData = res.body.data;
+                    this.totalDataCount = parseInt(res.body.data[0][0]);
+                    this.totalPage = Math.ceil(this.totalDataCount/this.pagesize);
+                    this.$http.post('http://lgkj.chuangkegf.com/wuchuang/pagekind.php',{
+                        kind:'gethis',
+                        userid:this.userId,
+                        username:this.userName,
+                        pagestart:this.startpage,
+                        pagesize:this.pagesize
+                    },{emulateJSON:true}).then((res)=>{
+                        if(res.body.code == 200){
+                            this.listData = res.body.data;
+                        }
+                    },(err)=>{
+                        console.log(err);
+                    })
                 }
             },(err)=>{
                 console.log(err);
@@ -309,10 +348,26 @@ export default {
         },
         getHisData(){
             this.$http.post('http://lgkj.chuangkegf.com/wuchuang/pagekind.php',{
-                kind:'getpagehis'
+                kind:'getpagecount',
+                userid:this.userId,
+                username:this.userName
             },{emulateJSON:true}).then((res)=>{
                 if(res.body.code == 200){
-                    this.listData = res.body.data;
+                    this.totalDataCount = parseInt(res.body.data[0][0]);
+                    this.totalPage = Math.ceil(this.totalDataCount/this.pagesize);
+                    this.$http.post('http://lgkj.chuangkegf.com/wuchuang/pagekind.php',{
+                        kind:'getpagehis',
+                        userid:this.userId,
+                        username:this.userName,
+                        pagestart:this.startpage,
+                        pagesize:this.pagesize
+                    },{emulateJSON:true}).then((res)=>{
+                        if(res.body.code == 200){
+                            this.hisData = res.body.data;
+                        }
+                    },(err)=>{
+                        console.log(err);
+                    })
                 }
             },(err)=>{
                 console.log(err);
@@ -577,25 +632,26 @@ export default {
         nextPage(){
             if(this.currPage<this.totalPage){
                 this.startpage += this.pagesize;
-                this.changePage();
+                console.log(this.startpage);
+                this.orderTab == 1?this.getListData():this.getHisData();
                 this.currPage++;
             }
         },
         prevPage(){
             if(this.currPage>1){
                 this.startpage -= this.pagesize;
-                this.changePage();
+                this.orderTab == 1?this.getListData():this.getHisData();
                 this.currPage--;
             }
         },
         firstPage(){
             this.startpage = 0;
-            this.changePage();
+            this.orderTab == 1?this.getListData():this.getHisData();
             this.currPage = 1;
         },
         lastPage(){
             this.startpage = this.pagesize*(this.totalPage-1);
-            this.changePage();
+            this.orderTab == 1?this.getListData():this.getHisData();
             this.currPage = this.totalPage;
         }
     }
