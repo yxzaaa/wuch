@@ -83,7 +83,6 @@ export default {
                     upwd:this.userPwd,
                     prjid:this.prjid
                 },{emulateJSON:true}).then((res)=>{
-                    console.log(res.body);
                     if(res.body.code == 200){
                         this.successShow = true;
                     }else if(res.body.code == 400){

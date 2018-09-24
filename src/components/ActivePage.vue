@@ -1,5 +1,6 @@
 <template>
     <div class='active-box page-box'>
+        <!-- <div :class='{"last-second":lastSecond==true}' id='lastSec' v-if='lastSecond'>{{currSec}}</div> -->
         <div class='top-message panel-box panel'>
             <div class='page-logo'>
                 <div class='page-name'>
@@ -12,7 +13,7 @@
                     <div class='time-box'>
                         <span>{{currHour}}</span>:
                         <span>{{currMin}}</span>:
-                        <span>{{currSec}}</span>
+                        <span :class='{"last-second":lastSecond==true}'>{{currSec}}</span>
                     </div>
                 </div>
             </div>
@@ -420,7 +421,8 @@ export default {
             scrollTimer:null,
             pageId:0,
             pageName:'',
-            hisOpenCode:[]
+            hisOpenCode:[],
+            lastSecond:false
         }
     },
     mounted(){
@@ -435,6 +437,7 @@ export default {
                 this.clearAllData();
                 this.getPageData();
                 this.getPriceList();
+                this.lastSecond = false;
                 //created事件触发的函数可以在这里写...  
                 //都是componentA组件，声明周期还在，改变不了
             },
@@ -475,7 +478,6 @@ export default {
                 pageid:this.pageId,
                 pagename:this.pageName
             },{emulateJSON:true}).then((res)=>{
-                console.log(res);
                 if(res.body.code == 200){
                    this.priceList = res.body.data;
                 }
@@ -533,6 +535,7 @@ export default {
                 var min = Math.floor((delayTime-hour*3600)/60);
                 var second = Math.floor(delayTime - hour*3600 - min*60);
                 if(delayTime <= 0){
+                    this.lastSecond = false;
                     this.currHour = '00';
                     this.currMin = '00';
                     this.currSec = '00';
@@ -541,10 +544,15 @@ export default {
                     this.$emit('showNotice',this.pageName+','+this.expect+'期已开奖，投注时请注意倒计时！');
                     this.getPageData();
                     this.getPriceList();
-                }else{
+                }else if(delayTime > 30){
                     this.currHour = hour>=10?hour:'0'+hour;
                     this.currMin = min>=10?min:'0'+min;
                     this.currSec = second>=10?second:'0'+second;
+                }else if(delayTime <= 30){
+                    this.currHour = hour>=10?hour:'0'+hour;
+                    this.currMin = min>=10?min:'0'+min;
+                    this.currSec = second>=10?second:'0'+second;
+                    this.lastSecond = true;
                 }
             },1000)
         },
@@ -587,7 +595,6 @@ export default {
                     var that = this;
                     var allSucc = true;
                     that.resList.map(function(item,index){
-                        console.log(item.pagenums);
                         that.$http.post('http://lgkj.chuangkegf.com/wuchuang/addplaylist.php',{
                             userid:item.userid,
                             username:item.username,

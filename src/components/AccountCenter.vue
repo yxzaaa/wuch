@@ -34,7 +34,7 @@
                             <h3 class='panel-title'>
                                 <span class='icon icon-credit-card' style='padding-right:10px;display:inline-block;font-size:16px;'></span>
                                 我的银行卡
-                                <span class='pay-btn mybtn' @click='showModal(3)' v-if="pageData[2]!=''">解绑</span>
+                                <span class='pay-btn mybtn' @click='showModal(8)' v-if="pageData[2]!=''">解绑</span>
                             </h3>
                             <div class='main-pay-detail' v-if="pageData[2]!=''">
                                 <span class='bank'>{{pageData[4]}}</span>
@@ -225,6 +225,7 @@
                         <li><span>银行卡号</span><input type="text" placeholder="请输入银行卡号" maxlength="32" v-model="cardNum"></li>
                     </ul>
                     <div class='input-pay' v-if='currModalKind == 7'><input type="password" v-model="moneyPwd"/></div>
+                    <div class='input-pay' v-if='currModalKind == 8'><input type="password" v-model="moneyPwd"/></div>
                 </div>
                 <div class='modal-btn-box'>
                     <span class='mybtn' @click='confirmModal(currModalKind)'>确定</span>
@@ -437,6 +438,16 @@ export default {
                         this.$emit('showNotice','您尚未绑定银行卡');
                     }
                     break;
+                case 8:
+                    if(this.pageData[2] != ''){
+                        this.currModalTitle = '资金密码';
+                        this.currModaldus = '请输入资金密码';
+                        this.currModalKind = 8;
+                        this.modal = true;
+                    }else{
+                        this.$emit('showNotice','您尚未绑定银行卡');
+                    }
+                    break;
             }
         },
         confirmModal(kind){
@@ -627,12 +638,30 @@ export default {
                         })
                     }
                     break;
+                case 8:
+                    //验证资金密码
+                    if(this.moneyPwd.length>=6){
+                        this.$http.post('http://lgkj.chuangkegf.com/wuchuang/userinfo.php',{
+                            kind:'checkpwd',
+                            userid:this.userId,
+                            username:this.userName,
+                            moneypwd:this.moneyPwd
+                        },{emulateJSON:true}).then((res)=>{
+                            if(res.body.code == 200){
+                                this.showModal(3);
+                            }else{
+                                this.$emit('showNotice','资金密码错误！');
+                            }
+                        },(err)=>{
+                            console.log(err);
+                        })
+                    }
+                    break;
             }
         },
         nextPage(){
             if(this.currPage<this.totalPage){
                 this.startpage += this.pagesize;
-                console.log(this.startpage);
                 this.orderTab == 1?this.getListData():this.getHisData();
                 this.currPage++;
             }

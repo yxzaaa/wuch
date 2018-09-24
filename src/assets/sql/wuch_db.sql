@@ -29,6 +29,7 @@ create table userequest(
 	username varchar(32) not null,
 	cardnum varchar(32) not null,
 	rtime varchar(128) not null,
+	resultstate varchar(8) not null,
 	rstate boolean not null
 );
 -- 彩票种类、信息表

@@ -116,7 +116,7 @@ export default {
     mounted(){
         this.$http.get('http://lgkj.chuangkegf.com/wuchuang/check.php').then((res)=>{
             if(res.body.code == 400){
-                // this.$router.replace('/login');
+                this.$router.replace('/login');
             }else if(res.body.code == 200){
                 if(!sessionStorage.getItem('login')){
                     sessionStorage.setItem('login',true);
@@ -160,44 +160,43 @@ export default {
             console.log(err);
         })
         //
-        this.$http.post('http://lgkj.chuangkegf.com/wuchuang/pagekind.php',{
-            kind:'gettab',
-            userkind:0
-        },{emulateJSON:true}).then((res)=>{
-            if(res.body.code == 200){
-                var that = this;
-                res.body.data.map(function(item,index){
-                    that.navList.push({
-                        title:item.pagename,
-                        icon:item.icon,
-                        isActive:false,
-                        path:item.pagepath,
-                        pageNum:item.pid
-                    })
-                })
-                if(sessionStorage.getItem('pagenum')){
-                    var pagenum = sessionStorage.getItem('pagenum');
-                    that.navList.map(function(item,index){
-                        item.isActive = false;
-                        if(item.pageNum == pagenum){
-                            item.isActive = true;
-                        }
-                    })
-                }else{
-                    this.changePage(0,this.navList[0].path);
-                }
-            }
-        },(err)=>{
-            console.log(err);
-        })
-        this.userName = localStorage.getItem('uname');
-        this.userid = localStorage.getItem('userid');
-        this.getNews();
+        //this.$http.post('http://lgkj.chuangkegf.com/wuchuang/pagekind.php',{
+        //    kind:'gettab',
+        //    userkind:0
+        //},{emulateJSON:true}).then((res)=>{
+        //    if(res.body.code == 200){
+        //        var that = this;
+        //        res.body.data.map(function(item,index){
+        //            that.navList.push({
+        //                title:item.pagename,
+        //                icon:item.icon,
+        //                isActive:false,
+        //                path:item.pagepath,
+        //                pageNum:item.pid
+        //            })
+        //        })
+        //        if(sessionStorage.getItem('pagenum')){
+        //            var pagenum = sessionStorage.getItem('pagenum');
+        //            that.navList.map(function(item,index){
+        //                item.isActive = false;
+        //                if(item.pageNum == pagenum){
+        //                    item.isActive = true;
+        //                }
+        //            })
+        //        }else{
+        //            this.changePage(0,this.navList[0].path);
+        //        }
+        //    }
+        //},(err)=>{
+        //    console.log(err);
+        //})
+        //this.userName = localStorage.getItem('uname');
+        //this.userid = localStorage.getItem('userid');
+        //this.getNews();
         //
     },
     methods:{
         showGetPrice(msg){
-            console.log(msg);
             this.getPrice = true;
             this.getName = msg[2];
             this.getPay = msg[4];
@@ -217,7 +216,11 @@ export default {
                     username:this.userName
                 },{emulateJSON:true}).then((res)=>{
                     if(res.body.code == 200){
-                        this.showGetPrice(res.body.data);
+                        if(res.body.data[2] != ''){
+                            this.showGetPrice(res.body.data);
+                        }else{
+                            this.showNotice(res.body.data[0]);
+                        }
                         var nid = res.body.data[1];
                         this.$http.post('http://lgkj.chuangkegf.com/wuchuang/userinfo.php',{
                             kind:'setnew',
@@ -228,14 +231,12 @@ export default {
                             },1000)
                         })
                     }else{
-                        console.log('no news');
                         setTimeout(()=>{
                             this.getNews();
                         },1000)
                     }
                 })
             }else{
-                console.log('showing modal');
                 setTimeout(()=>{
                     this.getNews();
                 },1000)
@@ -338,7 +339,7 @@ export default {
             if(confirm('退出系统？')){
                 var userid = localStorage.getItem('userid');
                 if(userid){
-                    this.$http.post('http://lgkj.chuangkegf.com/logout.php',
+                    this.$http.post('http://lgkj.chuangkegf.com/wuchuang/logout.php',
                     {
                         userid:userid,
                     },{emulateJSON:true}).then((res)=>{

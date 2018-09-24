@@ -258,6 +258,7 @@
     display: inline-block;
     text-align: center;
     margin-right:5px;
+    transition: all .3s;
 }
 .choose-box>.choose-list>li>div:first-child{
     background: #d81e06;
@@ -416,11 +417,27 @@
 }
 .choose-list>li span.active{
     background: #d81e06 !important;
+    transform: scale(1.1);
+    box-shadow: 0px 0px 8px 0px rgba(0,0,0,.2);
 }
 .choose-add-box>div>span.active{
     background: #d81e06 !important;
     color:#fff;
     border:1px solid transparent !important;
+}
+#lastSec{
+    position: fixed;
+    width:60px;
+    height:60px;
+    font-size: 32px;
+    color:#fff;
+    top:80px;
+    right:30px;
+    line-height: 60px;
+    text-align: center;
+    border-radius: 50%;
+    display: none;
+    z-index: 1000;
 }
 @media screen and (max-width:1560px){
     .choose-box>.choose-add-box{
@@ -528,5 +545,8 @@
         min-width: 200px;
         padding:0px;
         padding-bottom:20px;
+    }
+    #lastSec{
+        display: block;
     }
 }

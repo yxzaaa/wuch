@@ -566,6 +566,118 @@
         transform: scale(1);
     }
 }
+@-moz-keyframes showPrice /* Firefox */
+{
+    0%{
+        transform: scale(0);
+    }
+    60%{
+        transform: scale(0);
+    }
+    80%{
+        transform: scale(1.2);
+    }
+    100%{
+        transform: scale(1);
+    }
+}
+
+@-webkit-keyframes showPrice /* Safari 和 Chrome */
+{
+    0%{
+        transform: scale(0);
+    }
+    60%{
+        transform: scale(0);
+    }
+    80%{
+        transform: scale(1.2);
+    }
+    100%{
+        transform: scale(1);
+    }
+}
+
+@-o-keyframes showPrice /* Opera */
+{
+    0%{
+        transform: scale(0);
+    }
+    60%{
+        transform: scale(0);
+    }
+    80%{
+        transform: scale(1.2);
+    }
+    100%{
+        transform: scale(1);
+    }
+}
+@keyframes lastSecond{
+    0%{
+        transform: scale(1);
+        background: #666;
+    }
+    30%{
+        transform: scale(1.5);
+        background: #d81e06;
+    }
+    100%{
+        transform: scale(1);
+        background: #666;
+    }
+}
+@-moz-keyframes lastSecond /* Firefox */
+{
+    0%{
+        transform: scale(1);
+        background: #666;
+    }
+    30%{
+        transform: scale(1.5);
+        background: #d81e06;
+    }
+    100%{
+        transform: scale(1);
+        background: #666;
+    }
+}
+
+@-webkit-keyframes lastSecond /* Safari 和 Chrome */
+{
+    0%{
+        transform: scale(1);
+        background: #666;
+    }
+    30%{
+        transform: scale(1.5);
+        background: #d81e06;
+    }
+    100%{
+        transform: scale(1);
+        background: #666;
+    }
+}
+
+@-o-keyframes lastSecond /* Opera */
+{
+    0%{
+        transform: scale(1);
+        background: #666;
+    }
+    30%{
+        transform: scale(1.5);
+        background: #d81e06;
+    }
+    100%{
+        transform: scale(1);
+        background: #666;
+    }
+}
+.last-second{
+    animation:lastSecond 1s 30;
+    -webkit-animation:lastSecond 1s 30; /* Safari 和 Chrome */
+}
 .price-modal>.get-price{
     position: absolute;
     left:50%;
@@ -615,6 +727,35 @@
     opacity: 0.8;
 }
 @keyframes durhide{
+    0%{
+        width:100%;
+    }
+    100%{
+        width:0px;
+    }
+}
+@-moz-keyframes myfirst /* Firefox */
+{
+    0%{
+        width:100%;
+    }
+    100%{
+        width:0px;
+    }
+}
+
+@-webkit-keyframes myfirst /* Safari 和 Chrome */
+{
+    0%{
+        width:100%;
+    }
+    100%{
+        width:0px;
+    }
+}
+
+@-o-keyframes myfirst /* Opera */
+{
     0%{
         width:100%;
     }

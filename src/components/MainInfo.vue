@@ -101,7 +101,6 @@ export default {
             userid:userid,
             username:username,
         },{emulateJSON:true}).then((res)=>{
-            console.log(res);
             if(res.body.code == 200){
                 this.restMoney = res.body.data[0];
             }
