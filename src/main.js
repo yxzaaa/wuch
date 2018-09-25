@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import MetaInfo from 'vue-meta-info'
 import './assets/css/bootstrap.css'
 import './assets/css/reset.css'
 import './assets/css/index.css'
@@ -16,6 +17,7 @@ import './assets/css/font-awesome.min.css'
 // import './assets/css/account.css'
 
 Vue.config.productionTip = false
+Vue.use(MetaInfo)
 
 /* eslint-disable no-new */
 new Vue({

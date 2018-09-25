@@ -121,7 +121,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class='page-tool btn-group'>
+                    <div class='page-tool btn-group table-page'>
                         <div><select type="text" v-model="pagesize">
                             <option>10</option>
                             <option>20</option>
@@ -129,10 +129,16 @@
                             </select> 条</div>
                         <div class='show-num'>第 {{currPage}} 页</div>
                         <div class='show-num'>共 {{totalPage}} 页</div>
-                        <div class='btn btn-primary' @click='prevPage()'>上一页</div>
-                        <div class='btn btn-info' @click='firstPage()'>首页</div>
-                        <div class='btn btn-warning' @click='lastPage()'>末页</div>
-                        <div class='btn btn-primary' @click='nextPage()'>下一页</div>
+                        <div class='page-btn icon icon-angle-left' @click='prevPage()'></div>
+                        <div class='page-btn icon icon-circle' @click='firstPage()'></div>
+                        <div class='page-btn icon icon-double-angle-right' @click='lastPage()'></div>
+                        <div class='page-btn icon icon-angle-right' @click='nextPage()'></div>
+                    </div>
+                    <div class='mobile-page'>
+                        <div class='prev-page icon icon-angle-left' @click='prevPage()'></div>
+                        <div class='home-page icon icon-circle' @click='firstPage()'></div>
+                        <div class='last-page icon icon-double-angle-right' @click='firstPage()'></div>
+                        <div class='next-page icon icon-angle-right' @click='nextPage()'></div>
                     </div>
                 </div>
                 <div class='order-m-list' v-if='orderTab == 1'>
@@ -172,7 +178,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class='page-tool btn-group'>
+                    <div class='page-tool btn-group table-page'>
                         <div><select type="text" v-model="pagesize">
                             <option>10</option>
                             <option>20</option>
@@ -180,10 +186,16 @@
                             </select> 条</div>
                         <div class='show-num'>第 {{currPage}} 页</div>
                         <div class='show-num'>共 {{totalPage}} 页</div>
-                        <div class='btn btn-primary' @click='prevPage()'>上一页</div>
-                        <div class='btn btn-info' @click='firstPage()'>首页</div>
-                        <div class='btn btn-warning' @click='lastPage()'>末页</div>
-                        <div class='btn btn-primary' @click='nextPage()'>下一页</div>
+                        <div class='page-btn icon icon-angle-left' @click='prevPage()'></div>
+                        <div class='page-btn icon icon-circle' @click='firstPage()'></div>
+                        <div class='page-btn icon icon-double-angle-right' @click='lastPage()'></div>
+                        <div class='page-btn icon icon-angle-right' @click='nextPage()'></div>
+                    </div>
+                    <div class='mobile-page'>
+                        <div class='prev-page icon icon-angle-left' @click='prevPage()'></div>
+                        <div class='home-page icon icon-circle' @click='firstPage()'></div>
+                        <div class='last-page icon icon-double-angle-right' @click='firstPage()'></div>
+                        <div class='next-page icon icon-angle-right' @click='nextPage()'></div>
                     </div>
                 </div>
                 <div class='order-m-list' v-if='orderTab == 2'>

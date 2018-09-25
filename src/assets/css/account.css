@@ -273,10 +273,23 @@
     line-height: 30px;
     padding:0px;
     cursor: pointer;
-    font-size: 0.6em;
+    font-size: 14px;
+}
+.page-tool select{
+    padding:5px;
+    border:1px solid #eee;
+    color:#777;
 }
 .show-num{
-    font-size: 0.8em;
+    font-size: 14px;
+}
+.page-btn{
+    padding:3px 6px;
+    background: #fafafa;
+    color:#777;
+}
+.mobile-page{
+    display: none;
 }
 @media screen and (max-width:640px){
     .name-pay>.name-box{
@@ -298,5 +311,37 @@
     }
     .order-tab-box{
         padding:10px 0px;
+    }
+    .table-page{
+        display: none;
+    }
+    .mobile-page{
+        display: flex;
+        position: fixed;
+        bottom: 10px;
+        right:10px;
+        width:calc(100% - 60px);
+        justify-content: space-between;
+    }
+    .prev-page,.next-page{
+        width:30%;
+        height:50px;
+        line-height: 50px;
+        text-align: center;
+        background: #fafafa;
+        color:#777;
+        border:1px solid #eee;
+        border-radius: 5px;
+        font-size: 18px;
+    }
+    .home-page,.last-page{
+        width:50px;
+        height:50px;
+        line-height: 50px;
+        text-align: center;
+        background: #d81e06;
+        color:#fafafa;
+        border-radius: 5px;
+        font-size: 18px;
     }
 }

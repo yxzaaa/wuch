@@ -87,6 +87,14 @@
 </template>
 <script>
 export default {
+    metaInfo: {
+        title: '首页',
+        meta: [{
+            name: 'homepage',
+            content: '伍创国际'
+        }],
+        link: []
+    },
     data () {
         return {
             logo:'../assets/images/logo.png',
