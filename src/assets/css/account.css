@@ -276,20 +276,59 @@
     font-size: 14px;
 }
 .page-tool select{
-    padding:5px;
+    padding:0px 5px;
     border:1px solid #eee;
     color:#777;
 }
-.show-num{
+.page-tool>div.show-num{
     font-size: 14px;
+    width:80px;
+    vertical-align: middle;
+    text-align: center;
 }
 .page-btn{
     padding:3px 6px;
     background: #fafafa;
     color:#777;
+    text-align: center;
+    transition: all .3s;
+}
+.page-btn:hover{
+    background: #d81e06;
+    color:#fafafa;
+    border-radius: 8px;
 }
 .mobile-page{
     display: none;
+    position: fixed;
+    bottom: 10px;
+    right:10px;
+    width:calc(100% - 80px);
+    justify-content: space-between;
+}
+.prev-page,.next-page{
+    width:30%;
+    height:50px;
+    line-height: 50px;
+    text-align: center;
+    background: #fafafa;
+    color:#777;
+    border:1px solid #eee;
+    border-radius: 5px;
+    font-size: 18px;
+    box-shadow: 0px 5px 15px rgba(0,0,0,.15);
+}
+.home-page,.last-page{
+    width:50px;
+    height:50px;
+    line-height: 50px;
+    text-align: center;
+    background: #fafafa;
+    color:#d81e06;
+    border-radius: 5px;
+    border:1px solid #eee;
+    font-size: 18px;
+    box-shadow: 0px 5px 15px rgba(0,0,0,.15);
 }
 @media screen and (max-width:640px){
     .name-pay>.name-box{
@@ -317,31 +356,5 @@
     }
     .mobile-page{
         display: flex;
-        position: fixed;
-        bottom: 10px;
-        right:10px;
-        width:calc(100% - 60px);
-        justify-content: space-between;
-    }
-    .prev-page,.next-page{
-        width:30%;
-        height:50px;
-        line-height: 50px;
-        text-align: center;
-        background: #fafafa;
-        color:#777;
-        border:1px solid #eee;
-        border-radius: 5px;
-        font-size: 18px;
-    }
-    .home-page,.last-page{
-        width:50px;
-        height:50px;
-        line-height: 50px;
-        text-align: center;
-        background: #d81e06;
-        color:#fafafa;
-        border-radius: 5px;
-        font-size: 18px;
     }
 }

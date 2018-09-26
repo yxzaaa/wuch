@@ -134,12 +134,6 @@
                         <div class='page-btn icon icon-double-angle-right' @click='lastPage()'></div>
                         <div class='page-btn icon icon-angle-right' @click='nextPage()'></div>
                     </div>
-                    <div class='mobile-page'>
-                        <div class='prev-page icon icon-angle-left' @click='prevPage()'></div>
-                        <div class='home-page icon icon-circle' @click='firstPage()'></div>
-                        <div class='last-page icon icon-double-angle-right' @click='firstPage()'></div>
-                        <div class='next-page icon icon-angle-right' @click='nextPage()'></div>
-                    </div>
                 </div>
                 <div class='order-m-list' v-if='orderTab == 1'>
                     <ul>
@@ -157,6 +151,12 @@
                             </div>
                         </li>
                     </ul>
+                    <div class='mobile-page'>
+                        <div class='prev-page' @click='prevPage()'><span class='icon icon-angle-left'></span></div>
+                        <div class='home-page' @click='firstPage()'><span class='icon icon-circle'></span></div>
+                        <div class='last-page' @click='lastPage()'><span class='icon icon-double-angle-right'></span></div>
+                        <div class='next-page' @click='nextPage()'><span class='icon icon-angle-right'></span></div>
+                    </div>
                 </div>
                 <div class='order-list' v-if='orderTab == 2'>
                     <!-- 彩票报表 -->
@@ -179,7 +179,7 @@
                         </tbody>
                     </table>
                     <div class='page-tool btn-group table-page'>
-                        <div><select type="text" v-model="pagesize">
+                        <div class='show-num'><select type="text" v-model="pagesize">
                             <option>10</option>
                             <option>20</option>
                             <option>30</option>
@@ -191,12 +191,7 @@
                         <div class='page-btn icon icon-double-angle-right' @click='lastPage()'></div>
                         <div class='page-btn icon icon-angle-right' @click='nextPage()'></div>
                     </div>
-                    <div class='mobile-page'>
-                        <div class='prev-page icon icon-angle-left' @click='prevPage()'></div>
-                        <div class='home-page icon icon-circle' @click='firstPage()'></div>
-                        <div class='last-page icon icon-double-angle-right' @click='firstPage()'></div>
-                        <div class='next-page icon icon-angle-right' @click='nextPage()'></div>
-                    </div>
+                    
                 </div>
                 <div class='order-m-list' v-if='orderTab == 2'>
                     <ul>
@@ -209,6 +204,12 @@
                             </div>
                         </li>
                     </ul>
+                    <div class='mobile-page'>
+                        <div class='prev-page' @click='prevPage()'><span class='icon icon-angle-left'></span></div>
+                        <div class='home-page' @click='firstPage()'><span class='icon icon-circle'></span></div>
+                        <div class='last-page' @click='lastPage()'><span class='icon icon-double-angle-right'></span></div>
+                        <div class='next-page' @click='nextPage()'><span class='icon icon-angle-right'></span></div>
+                    </div>
                 </div>
             </div>
         </div>
