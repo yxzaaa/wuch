@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class='page-his'>
-                <p>历史开奖<span class='icon icon-repeat'></span></p>
+                <p>历史开奖</p>
                 <ul class='time-box'>
                     <li>第 {{hisList[1].expect}} 期<span>{{hisList[1].opencode}}</span></li>
                     <li>第 {{hisList[2].expect}} 期<span>{{hisList[2].opencode}}</span></li>
@@ -448,6 +448,7 @@ export default {
         getPageData(){
             this.pageId = this.$route.query.pageid;
             this.pageName = this.$route.query.pagename;
+            this.$emit('showLoading','');
             this.$http.post('http://lgkj.chuangkegf.com/wuchuang/getpageinfo.php',{
                 kind:'initpageinfo',
                 pageid:this.pageId,
@@ -509,12 +510,13 @@ export default {
                     this.scrollTimer = setInterval(()=>{
                         count ++;
                         this.hisOpenCode = this.getRandomCode();
-                        if(count>30){
+                        if(count>10){
                             clearInterval(this.scrollTimer);
                             this.scrollTimer = null;
                             this.hisOpenCode = this.hisList[0].opencode.split(',');
                         }
-                    },100)
+                    },200)
+                    this.$emit('hideLoading','');
                 }
             })
         },
@@ -722,19 +724,15 @@ export default {
                 });
                 data.pagecount = count;
             }else if(kind == 2){
-                list = data.textinfo.split(/[,; ]/);
-                var isucc = true;
+                list = data.textinfo.split(/[，；,; ]/);
+                var isucc = [];
                 list.map(function(item,index){
-                    if(item.length != 3){
-                        isucc = false;
+                    if(item.length == 3){
+                        isucc.push(item);
                     }
                 })
-                if(isucc == true){
-                    data.numlist = list;
-                    data.pagecount = list.length;
-                }else if(list[0].length<3 && list.length == 1){
-                    data.pagecount = 0;
-                }
+                data.numlist = isucc;
+                data.pagecount = isucc.length;
             }
         },
         changekind(str,data){

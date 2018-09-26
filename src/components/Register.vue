@@ -12,15 +12,18 @@
                 <div class='com-name'>{{comName}}</div>
                 <div class='user-name'>
                     <input type="text" v-model='userName' autocomplete="off" :class='{error:hasError}'
-                     placeholder="用户名/长度不小于3个字符" maxlength="10"/>
+                     placeholder="用户名/长度不小于3个字符" maxlength="10" @blur='isRule()'/>
+                     <span class='show-rule' v-if='userInput'></span>
                 </div>
                 <div class='user-pwd'>
                     <input type="password" v-model='userPwd' autocomplete="new-password" :class='{error:hasError}' 
-                    placeholder='密码/长度不小于6个字符' maxlength="16"/>
+                    placeholder='密码/长度不小于6个字符' maxlength="16" @blur='isRule()'/>
+                    <span class='show-rule' v-if='pwdInput'></span>
                 </div>
                 <div class='user-pwd'>
                     <input type="password" v-model='confirmPwd' autocomplete="new-password" :class='{error:hasError}' 
-                    placeholder='确认密码' maxlength="16"/>
+                    placeholder='确认密码' maxlength="16" @blur='isRule()'/>
+                    <span class='show-rule' v-if='cPwdInput'></span>
                 </div>
                 <div class='login-btn' @click='register()'>注册</div>
             </div>
@@ -44,6 +47,9 @@ export default {
             copyRight:'',
             stay:false,
             successShow:false,
+            userInput:false,
+            pwdInput:false,
+            cPwdInput:false,
             prjid:3
         }
     },
@@ -52,6 +58,12 @@ export default {
     methods:{
         toLogin(){
             this.$router.push('/login');
+        },
+        isRule(){
+            var userRegExp = new RegExp(/([\u4e00-\u9fa5]|[A-Za-z0-9]){3,10}/); 
+            if(!userRegExp.exec(this.userName)){
+                
+            }
         },
         login(){
             if(this.userName != '' && this.userPwd != ''){
