@@ -317,6 +317,7 @@ export default {
             this.orderTab == 1?this.getListData():this.getHisData();
         },
         refreshData(){
+            this.$emit('showLoading','');
             this.$http.post('http://lgkj.chuangkegf.com/wuchuang/userinfo.php',{
                 kind:'maininfo',
                 userid:this.userId,
@@ -327,12 +328,14 @@ export default {
                     if(this.pageData[5] == 0){
                         this.noCard = true;
                     }
+                    this.$emit('hideLoading','');
                 }
             },(err)=>{
                 console.log(err);
             })
         },
         getListData(){
+            this.$emit('showLoading','');
             this.$http.post('http://lgkj.chuangkegf.com/wuchuang/pagekind.php',{
                 kind:'gethiscount',
                 userid:this.userId,
@@ -350,6 +353,7 @@ export default {
                     },{emulateJSON:true}).then((res)=>{
                         if(res.body.code == 200){
                             this.listData = res.body.data;
+                            this.$emit('hideLoading','');
                         }
                     },(err)=>{
                         console.log(err);
@@ -360,6 +364,7 @@ export default {
             })
         },
         getHisData(){
+            this.$emit('showLoading','');
             this.$http.post('http://lgkj.chuangkegf.com/wuchuang/pagekind.php',{
                 kind:'getpagecount',
                 userid:this.userId,
@@ -377,6 +382,7 @@ export default {
                     },{emulateJSON:true}).then((res)=>{
                         if(res.body.code == 200){
                             this.hisData = res.body.data;
+                            this.$emit('hideLoading','');
                         }
                     },(err)=>{
                         console.log(err);

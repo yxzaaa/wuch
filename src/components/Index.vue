@@ -80,12 +80,21 @@
                 </ul>
             </div>
             <div :class="['right-content',{'slide-left':slideToggle},{'set-toggle':setToggle}]">
-                <router-view @getNum='rcvMsg' @showNotice='showNotice' @changeName='changeName'></router-view>
+                <router-view @getNum='rcvMsg' @showNotice='showNotice' 
+                @changeName='changeName' @showLoading='showLoading'
+                @hideLoading='hideLoading'></router-view>
+            </div>
+        </div>
+        <div class='loading-anim' v-if='loading'>
+            <div id="ajaxloader3">
+                <div class="outer"></div>
+                <div class="inner"></div>
             </div>
         </div>
     </div>
 </template>
 <script>
+import '../assets/css/style.css';
 export default {
     metaInfo: {
         title: '首页',
@@ -118,7 +127,8 @@ export default {
             getName:'',
             getPay:0,
             getExpect:'',
-            getPrice:false
+            getPrice:false,
+            loading:false
         }
     },
     mounted(){
@@ -209,6 +219,12 @@ export default {
             this.getName = msg[2];
             this.getPay = msg[4];
             this.getExpect = msg[3];
+        },
+        showLoading(msg){
+            this.loading = true;
+        },
+        hideLoading(msg){
+            this.loading = false;
         },
         closePrice(){
             this.getPrice = false;
