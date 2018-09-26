@@ -448,6 +448,7 @@ export default {
         getPageData(){
             this.pageId = this.$route.query.pageid;
             this.pageName = this.$route.query.pagename;
+            this.$emit('showLoading','');
             this.$http.post('http://lgkj.chuangkegf.com/wuchuang/getpageinfo.php',{
                 kind:'initpageinfo',
                 pageid:this.pageId,
@@ -515,6 +516,7 @@ export default {
                             this.hisOpenCode = this.hisList[0].opencode.split(',');
                         }
                     },100)
+                    this.$emit('hideLoading','');
                 }
             })
         },
