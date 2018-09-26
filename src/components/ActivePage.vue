@@ -510,12 +510,12 @@ export default {
                     this.scrollTimer = setInterval(()=>{
                         count ++;
                         this.hisOpenCode = this.getRandomCode();
-                        if(count>10){
+                        if(count>30){
                             clearInterval(this.scrollTimer);
                             this.scrollTimer = null;
                             this.hisOpenCode = this.hisList[0].opencode.split(',');
                         }
-                    },200)
+                    },100)
                     this.$emit('hideLoading','');
                 }
             })

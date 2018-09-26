@@ -13,17 +13,17 @@
                 <div class='user-name'>
                     <input type="text" v-model='userName' autocomplete="off" :class='{error:hasError}'
                      placeholder="用户名/长度不小于3个字符" maxlength="10" @blur='isRule()'/>
-                     <span class='show-rule' v-if='userInput'></span>
+                     <div class='show-rule' v-if='userInput'>用户名长3-10个字符，可使用数字，字母，汉字的组合</div>
                 </div>
                 <div class='user-pwd'>
                     <input type="password" v-model='userPwd' autocomplete="new-password" :class='{error:hasError}' 
                     placeholder='密码/长度不小于6个字符' maxlength="16" @blur='isRule()'/>
-                    <span class='show-rule' v-if='pwdInput'></span>
+                    <div class='show-rule' v-if='pwdInput'>密码长6-16个字符，可使用数字，字母的组合</div>
                 </div>
                 <div class='user-pwd'>
                     <input type="password" v-model='confirmPwd' autocomplete="new-password" :class='{error:hasError}' 
                     placeholder='确认密码' maxlength="16" @blur='isRule()'/>
-                    <span class='show-rule' v-if='cPwdInput'></span>
+                    <div class='show-rule' v-if='cPwdInput'>两次输入的密码必须一致</div>
                 </div>
                 <div class='login-btn' @click='register()'>注册</div>
             </div>
@@ -61,8 +61,22 @@ export default {
         },
         isRule(){
             var userRegExp = new RegExp(/([\u4e00-\u9fa5]|[A-Za-z0-9]){3,10}/); 
-            if(!userRegExp.exec(this.userName)){
-                
+            var pwdRegExp = new RegExp(/([A-Za-z0-9]){6,16}/);
+            if(!userRegExp.exec(this.userName) && this.userName != ''){
+                this.userInput = true;
+            }else{
+                this.userInput = false;
+            }
+            if(!pwdRegExp.exec(this.userPwd) && this.userPwd != ''){
+                console.log(this.userPwd);
+                this.pwdInput = true;
+            }else{
+                this.pwdInput = false;
+            }
+            if((!pwdRegExp.exec(this.confirmPwd) || this.userPwd != this.confirmPwd) && this.confirmPwd != ''){
+                this.cPwdInput = true;
+            }else{
+                this.cPwdInput = false;
             }
         },
         login(){
@@ -88,7 +102,7 @@ export default {
             }
         },
         register(){
-            if(this.userName.length>=3 && this.userPwd.length >=6 && this.userPwd === this.confirmPwd){
+            if(this.userInput==false && this.pwdInput==false && this.cPwdInput==false){
                 this.$http.post('http://lgkj.chuangkegf.com/wuchuang/register.php',
                 {
                     uname:this.userName,

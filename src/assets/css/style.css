@@ -298,11 +298,11 @@ body {
   margin: 0 auto;
 }
 #facebook .bar {
-  background: #99aaca;
-  border: 1px solid #96a6c9;
+  background: #d81e06;
+  border: 1px solid #d81e06;
   float: left;
   margin: 6px 4px 0 0;
-  width: 6px;
+  width: 8px;
   height: 18px;
   -webkit-animation: facebook-pulse 1s linear infinite normal;
   -moz-animation: facebook-pulse 1s linear infinite normal;
@@ -648,7 +648,6 @@ h1.loadingtext span:nth-child(7) {
   from {
     transform: rotate(160deg);
     opacity: 0;
-    box-shadow: 0 0 1px rgba(0, 61, 76, 0.9);
   }
   50% {
     transform: rotate(145deg);
@@ -663,7 +662,6 @@ h1.loadingtext span:nth-child(7) {
   from {
     -moz-transform: rotate(160deg);
     opacity: 0;
-    box-shadow: 0 0 1px rgba(0, 61, 76, 0.9);
   }
   50% {
     -moz-transform: rotate(145deg);
@@ -678,7 +676,6 @@ h1.loadingtext span:nth-child(7) {
   from {
     -webkit-transform: rotate(160deg);
     opacity: 0;
-    box-shadow: 0 0 1px rgba(0, 61, 76, 0.9);
   }
   50% {
     -webkit-transform: rotate(145deg);
@@ -780,20 +777,14 @@ h1.loadingtext span:nth-child(7) {
   10% {
     margin-top: 5px;
     height: 22px;
-    border-color: #d1d8e6;
-    background-color: #bac5db;
   }
   20% {
     margin-top: 0px;
     height: 32px;
-    border-color: #d1d7e2;
-    background-color: #bac5db;
   }
   30% {
     margin-top: 1px;
     height: 30px;
-    border-color: #d1d8e6;
-    background-color: #bac5db;
   }
   40% {
     margin-top: 3px;
@@ -812,20 +803,14 @@ h1.loadingtext span:nth-child(7) {
   10% {
     margin-top: 5px;
     height: 22px;
-    border-color: #d1d8e6;
-    background-color: #bac5db;
   }
   20% {
     margin-top: 0px;
     height: 32px;
-    border-color: #d1d7e2;
-    background-color: #bac5db;
   }
   30% {
     margin-top: 1px;
     height: 30px;
-    border-color: #d1d8e6;
-    background-color: #bac5db;
   }
   40% {
     margin-top: 3px;
@@ -844,20 +829,14 @@ h1.loadingtext span:nth-child(7) {
   10% {
     margin-top: 5px;
     height: 22px;
-    border-color: #d1d8e6;
-    background-color: #bac5db;
   }
   20% {
     margin-top: 0px;
     height: 32px;
-    border-color: #d1d7e2;
-    background-color: #bac5db;
   }
   30% {
     margin-top: 1px;
     height: 30px;
-    border-color: #d1d8e6;
-    background-color: #bac5db;
   }
   40% {
     margin-top: 3px;

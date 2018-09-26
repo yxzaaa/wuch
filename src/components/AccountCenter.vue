@@ -395,6 +395,7 @@ export default {
         },
         changeTab(index){
             this.toggleTab = index;
+            this.$emit('hideLoading','');
         },
         canelModal(){
             this.modal = false;
