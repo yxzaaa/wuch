@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Resource from 'vue-resource'
 import IndexPage from '@/components/Index'
 import MainInfo from '@/components/MainInfo'
 import Login from '@/components/Login'
@@ -11,7 +10,6 @@ import BeiJing from '@/components/BeiJing'
 import ChongQing from '@/components/ChongQing'
 
 Vue.use(Router)
-Vue.use(Resource)
 
 export default new Router({
   routes: [

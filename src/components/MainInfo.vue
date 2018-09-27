@@ -17,7 +17,7 @@
             <div @click='toAccount(1)' class='mybtn'><span class='icon icon-briefcase'></span>提现</div>
         </div>
         <div class='nav-btns-box panel'>
-            <h3 class='panel-title'>热门彩种</h3>
+            <h3 class='panel-title'><span class='icon icon-user' style='padding-right:10px;display:inline-block;font-size:16px;'></span>热门彩种</h3>
             <ul>
                 <li v-for='(item,index) in navList' :key='index' @click='jump(index)'>
                     <img src="../assets/images/page.png" alt="">
@@ -83,7 +83,10 @@ export default {
         }
     },
     mounted(){
+        //初始化组件状态
         this.$emit('getNum',sessionStorage.getItem('pagenum'));
+        this.$emit('toggleTab',0);
+        this.$emit('hideLoading','');
         //轮播图代码
         this.slideBoxWidth = document.getElementById('mainBanner').clientWidth;
         this.slideWidth = this.slideData.length*this.slideBoxWidth;

@@ -91,10 +91,10 @@
             <div class='center-item-box' v-if='toggleTab == 2'>
                 <div class='order-tab-box'>
                     <div :class="['order-tab',{'active':orderTab == 1}]" @click='changeOrderTab(1)'>我的投注</div>
-                    <div :class="['order-tab',{'active':orderTab == 2}]" @click='changeOrderTab(2)'>彩票报表</div>
+                    <div :class="['order-tab',{'active':orderTab == 2}]" @click='changeOrderTab(2)'>开奖记录</div>
                 </div>
                 <div class='order-list' v-if='orderTab == 1'>
-                <!-- 我的投注 -->
+                    <!-- 我的投注 -->
                     <table>
                         <thead>
                             <tr>
@@ -287,16 +287,30 @@ export default {
     },
     mounted(){
         this.toggleTab = this.$route.query.tab;
+        this.orderTab = this.$route.query.listTab;
+        if(this.toggleTab == 1){
+            this.$emit('toggleTab',3);
+        }else if(this.toggleTab == 2){
+            this.$emit('toggleTab',2);
+        }
         this.$emit('getNum',0);
+        this.$emit('hideLoading','');
         this.userName = localStorage.getItem('uname');
         this.userId = localStorage.getItem('userid');
         this.refreshData();
         this.getListData();
+        this.getHisData();
     },
     watch: {
         $route: {
             handler: function (val, oldVal) {
                 this.toggleTab = this.$route.query.tab;
+                this.orderTab = this.$route.query.listTab;
+                if(this.toggleTab == 1){
+                    this.$emit('toggleTab',3);
+                }else if(this.toggleTab == 2){
+                    this.$emit('toggleTab',2);
+                }
             },
             deep: true
         },

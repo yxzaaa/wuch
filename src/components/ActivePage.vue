@@ -34,11 +34,11 @@
         <div class='top-message panel-box'>
             <div class='page-content panel'>
                 <ul class='center-tab'>
-                    <li :class="['center-tab-item',{'active':toggleTab == 1}]" @click='changeTab(1)'>数字盘</li>
-                    <li :class="['center-tab-item',{'active':toggleTab == 2}]" @click='changeTab(2)'>双面盘</li>
-                    <li :class="['center-tab-item',{'active':toggleTab == 3}]" @click='changeTab(3)'>前三</li>
-                    <li :class="['center-tab-item',{'active':toggleTab == 4}]" @click='changeTab(4)'>中三</li>
-                    <li :class="['center-tab-item',{'active':toggleTab == 5}]" @click='changeTab(5)'>后三</li>
+                    <li :class="['center-tab-item',{'active':toggleTab == 1}]" @click='changeTab(1)'>数字盘<span v-if='toggleTab == 1'>赔率 {{1+odds}}</span></li>
+                    <li :class="['center-tab-item',{'active':toggleTab == 2}]" @click='changeTab(2)'>双面盘<span v-if='toggleTab == 2'>赔率 {{10*odds}}</span></li>
+                    <li :class="['center-tab-item',{'active':toggleTab == 3}]" @click='changeTab(3)'>前三<span v-if='toggleTab == 3'>赔率 {{1000*odds}}</span></li>
+                    <li :class="['center-tab-item',{'active':toggleTab == 4}]" @click='changeTab(4)'>中三<span v-if='toggleTab == 4'>赔率 {{1000*odds}}</span></li>
+                    <li :class="['center-tab-item',{'active':toggleTab == 5}]" @click='changeTab(5)'>后三<span style='right:0px' v-if='toggleTab == 5'>赔率 {{1000*odds}}</span></li>
                 </ul>  
                 <!-- 数字盘 -->
                 <div class='center-item-box' v-if='toggleTab == 1'>
@@ -109,7 +109,7 @@
                         <ul class='choose-list'>
                             <li v-for='(item,index) in doubleData.pagenums' :key="index">
                                 <div>{{item.itemname}}</div>
-                                <div>
+                                <div style='display:none;'>
                                     <span :class="{'active':isInData(0,item.itemdata)}">0</span>
                                     <span :class="{'active':isInData(1,item.itemdata)}">1</span>
                                     <span :class="{'active':isInData(2,item.itemdata)}">2</span>
@@ -122,10 +122,10 @@
                                     <span :class="{'active':isInData(9,item.itemdata)}">9</span>
                                 </div>
                                 <div>
-                                    <span @click='setPageData(doubleData,doubleData.kind,"大",index)'>大</span>
-                                    <span @click='setPageData(doubleData,doubleData.kind,"小",index)'>小</span>
-                                    <span @click='setPageData(doubleData,doubleData.kind,"单",index)'>单</span>
-                                    <span @click='setPageData(doubleData,doubleData.kind,"双",index)'>双</span>
+                                    <span @click='setPageData(doubleData,doubleData.kind,"大",index)' :class="{'active':item.itemdata[1]==6}">大</span>
+                                    <span @click='setPageData(doubleData,doubleData.kind,"小",index)' :class="{'active':item.itemdata[1]==1}">小</span>
+                                    <span @click='setPageData(doubleData,doubleData.kind,"单",index)' :class="{'active':item.itemdata[1]==3}">单</span>
+                                    <span @click='setPageData(doubleData,doubleData.kind,"双",index)' :class="{'active':item.itemdata[1]==2}">双</span>
                                     <span @click='setPageData(doubleData,doubleData.kind,"清",index)'>清</span>
                                 </div>
                             </li>
@@ -303,6 +303,7 @@ import '../assets/css/activepage.css';
 export default {
     data(){
         return{
+            odds:0.995,
             toggleTab:1,
             //数字盘
             numPageData:{
@@ -427,6 +428,8 @@ export default {
     },
     mounted(){
         this.$emit('getNum',sessionStorage.getItem('pagenum'));
+        this.$emit('toggleTab',1);
+        this.$emit('hideLoading','');
         this.getPageData();
         this.getPriceList();
     },
@@ -438,6 +441,8 @@ export default {
                 this.getPageData();
                 this.getPriceList();
                 this.lastSecond = false;
+                var content = document.getElementById('rightContent');
+                content.scrollTop = 0;
                 //created事件触发的函数可以在这里写...  
                 //都是componentA组件，声明周期还在，改变不了
             },

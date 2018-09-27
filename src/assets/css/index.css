@@ -388,7 +388,7 @@
 .panel{
     box-shadow:0 2px 6px rgba(0, 0, 0, 0.08);
     background: #fff;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 .panel>div{
     width:100%;
@@ -804,9 +804,57 @@
     width:100%;
     height:100%;
 }
+.main-tab{
+    position: fixed;
+    bottom: 0px;
+    left:0px;
+    width:100%;
+    height:50px;
+    border-top:1px solid #eee;
+    background: #fafafa;
+    display: none;
+    justify-content: space-between;
+}
+.main-tab>.tab-item{
+    width:25%;
+    height:50px;
+    text-align: center;
+    line-height: 16px;
+    font-size: 12px;
+    color:#aaa;
+    padding:5px;
+}
+.main-tab>.tab-item>span{
+    display: inline-block;
+    width:100%;
+    line-height: 24px;
+    font-size: 20px;
+    color:#aaa;
+    text-align: center;
+}
+.main-tab>.tab-item.active{
+    width:25%;
+    height:50px;
+    text-align: center;
+    line-height: 16px;
+    font-size: 12px;
+    color:#d81e06;
+    padding:5px;
+}
+.main-tab>.tab-item.active>span{
+    display: inline-block;
+    width:100%;
+    line-height: 24px;
+    font-size: 20px;
+    color:#d81e06;
+    text-align: center;
+}
 @media screen and (max-width:640px){
     .index-content{
         min-width: 0px;
+    }
+    .main-tab{
+        display: flex;
     }
     .left-nav{
         position: fixed;
@@ -857,10 +905,15 @@
         text-align: center;
     }
     .index-content{
-        height:calc(100% - 60px);
+        height:100vh;
+        padding-bottom: 50px;
+        padding-top:60px;
     }
     .index-nav{
         height:60px;
+        position: fixed;
+        top:0px;
+        left:0px;
     }
     .user-tools{
         height:60px;

@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import MetaInfo from 'vue-meta-info'
+import Resource from 'vue-resource'
 import './assets/css/bootstrap.css'
 import './assets/css/reset.css'
 import './assets/css/index.css'
@@ -11,6 +12,7 @@ import './assets/css/font-awesome.min.css'
 
 Vue.config.productionTip = false
 Vue.use(MetaInfo)
+Vue.use(Resource)
 
 /* eslint-disable no-new */
 new Vue({

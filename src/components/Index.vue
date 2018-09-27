@@ -17,20 +17,20 @@
                 <div class='cbtn'><span class='icon icon-ok' @click='closePrice()'></span></div>
             </div>
         </div>
-        <div :class="['toggle-icon',{'show':showNav}]" @click="navShow()"><span class='icon icon-align-left '></span></div>
+        <div :class="['toggle-icon',{'show':showNav}]" @click="navShow()" v-if='showNav'><span class='icon icon-align-left '></span></div>
         <div class='index-nav'>
             <div class='logo'><img src="../assets/images/logo.png" alt="" /></div>
             <div class='app-name'>{{appName}}&nbsp;&nbsp;<span>&nbsp;{{comName}}</span></div>
             <div class='user-tools'>
-                <div class='notice-tool'>
-                    <!-- <div :class="['tool-items',{'active':notice}]" @click="toggleNotice">
+                <!-- <div class='notice-tool'>
+                    <div :class="['tool-items',{'active':notice}]" @click="toggleNotice">
                         <span class='icon icon-comment-alt'></span>
                         <span class='notice-count'>2</span>
-                    </div> -->
-                    <!-- <ul class='tool-list' v-if='notice'>
+                    </div>
+                    <ul class='tool-list' v-if='notice'>
                         <li @click="showNotice('已读信息已读信息已读信息已读信息已读信息已读信息')"><a><span class='notice-yes icon icon-circle'></span>已读信息已读信息已读信息</a></li>
                         <li><a href=""><span class='notice-no icon icon-circle'></span>未读信息未读信息未读信息</a></li>
-                    </ul> -->
+                    </ul>
                 </div>
                 <div class='help-tool'>
                     <div :class="['tool-items',{'active':help}]" @click="toggleHelp">
@@ -39,10 +39,10 @@
                         <span class='icon icon-angle-down sm-hide'></span>
                     </div>
                     <ul class='tool-list' v-if='help'>
-                        <!-- <li><a href="">彩票玩法</a></li> -->
+                        <li><a href="">彩票玩法</a></li>
                         <li><a href="">网站公告</a></li>
                     </ul>
-                </div>
+                </div> -->
                 <div class='usercenter-tool'>
                     <div :class="['tool-items',{'active':user}]" @click="toggleUser">
                         <img src="../assets/images/avatar.png" alt="">
@@ -50,7 +50,7 @@
                         <span class='icon icon-angle-down sm-hide'></span>
                     </div>
                     <ul class='tool-list' v-if='user'>
-                        <li @click='toIndex()' style='display:none;' class='sm-show'><a>首页</a></li>
+                        <!-- <li @click='toIndex()' style='display:none;' class='sm-show'><a>首页</a></li> -->
                         <li @click='toAccount(1)'><a>账户中心</a></li>
                         <li @click='toAccount(2)'><a>订单中心</a></li>
                         <li @click='offSys()'><a href="">登出</a></li>
@@ -79,10 +79,10 @@
                     </li>
                 </ul>
             </div>
-            <div :class="['right-content',{'slide-left':slideToggle},{'set-toggle':setToggle}]">
+            <div :class="['right-content',{'slide-left':slideToggle},{'set-toggle':setToggle}]" id='rightContent'>
                 <router-view @getNum='rcvMsg' @showNotice='showNotice' 
                 @changeName='changeName' @showLoading='showLoading'
-                @hideLoading='hideLoading'></router-view>
+                @hideLoading='hideLoading' @toggleTab='toggleTab'></router-view>
             </div>
         </div>
         <div class='loading-anim' v-if='loading'>
@@ -90,6 +90,12 @@
                 <div class="outer"></div>
                 <div class="inner"></div>
             </div>
+        </div>
+        <div class='main-tab'>
+            <div :class="['tab-item',{'active':tabList[0].active}]" @click="toIndex()"><span class='icon icon-home'></span>首页</div>
+            <div :class="['tab-item',{'active':tabList[1].active}]" @click="navShow()"><span class='icon  icon-fire'></span>彩种</div>
+            <div :class="['tab-item',{'active':tabList[2].active}]" @click="toAccount(2,2)"><span class='icon icon-gift'></span>开奖</div>
+            <div :class="['tab-item',{'active':tabList[3].active}]" @click="toAccount(1)"><span class='icon  icon-user'></span>我的</div>
         </div>
     </div>
 </template>
@@ -114,6 +120,24 @@ export default {
             noticeInfo:'当前彩票已经开奖！',
             hasNotice:false,
             navList:[],
+            tabList:[
+                {
+                    name:'首页',
+                    active:true
+                },
+                {
+                    name:'彩种',
+                    active:false
+                },
+                {
+                    name:'开奖',
+                    active:false
+                },
+                {
+                    name:'我的',
+                    active:false
+                }
+            ],
             userName:'未登录',
             uid:0,
             userid:0,
@@ -232,6 +256,13 @@ export default {
         changeName(msg){
             this.userName = msg;
         },
+        toggleTab(msg){
+            this.showNav = false;
+            this.tabList.map(function(item,index){
+                item.active = false;
+            })
+            this.tabList[msg].active = true;
+        },
         getNews(){
             if(this.getPrice == false){
                 this.$http.post('http://lgkj.chuangkegf.com/wuchuang/userinfo.php',{
@@ -280,11 +311,12 @@ export default {
                 this.hasNotice = false;
             },5000);
         },
-        toAccount(index){
+        toAccount(index,list=1){
             this.$router.push({
                 path:'/account',
                 query:{
-                    tab:index
+                    tab:index,
+                    listTab:list
                 }
             });
             this.notice = false;
