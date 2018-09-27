@@ -108,7 +108,7 @@
                     <div class='choose-box'>
                         <ul class='choose-list'>
                             <li v-for='(item,index) in doubleData.pagenums' :key="index">
-                                <div>{{item.itemname}}</div>
+                                <div class='lg-item'>{{item.itemname}}</div>
                                 <div style='display:none;'>
                                     <span :class="{'active':isInData(0,item.itemdata)}">0</span>
                                     <span :class="{'active':isInData(1,item.itemdata)}">1</span>
@@ -122,11 +122,11 @@
                                     <span :class="{'active':isInData(9,item.itemdata)}">9</span>
                                 </div>
                                 <div>
-                                    <span @click='setPageData(doubleData,doubleData.kind,"大",index)' :class="{'active':item.itemdata[1]==6}">大</span>
-                                    <span @click='setPageData(doubleData,doubleData.kind,"小",index)' :class="{'active':item.itemdata[1]==1}">小</span>
-                                    <span @click='setPageData(doubleData,doubleData.kind,"单",index)' :class="{'active':item.itemdata[1]==3}">单</span>
-                                    <span @click='setPageData(doubleData,doubleData.kind,"双",index)' :class="{'active':item.itemdata[1]==2}">双</span>
-                                    <span @click='setPageData(doubleData,doubleData.kind,"清",index)'>清</span>
+                                    <span @click='setPageData(doubleData,doubleData.kind,"大",index)' :class="['lg-item',{'active':item.itemdata[1]==6}]">大</span>
+                                    <span @click='setPageData(doubleData,doubleData.kind,"小",index)' :class="['lg-item',{'active':item.itemdata[1]==1}]">小</span>
+                                    <span @click='setPageData(doubleData,doubleData.kind,"单",index)' :class="['lg-item',{'active':item.itemdata[1]==3}]">单</span>
+                                    <span @click='setPageData(doubleData,doubleData.kind,"双",index)' :class="['lg-item',{'active':item.itemdata[1]==2}]">双</span>
+                                    <span @click='setPageData(doubleData,doubleData.kind,"清",index)' class='lg-item'>清</span>
                                 </div>
                             </li>
                         </ul>

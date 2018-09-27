@@ -253,12 +253,24 @@
     color:#fff;
     display: flex;
     justify-content: space-between;
+    height:28px;
 }
 .choose-box>.choose-list>li>div>span{
     display: inline-block;
     text-align: center;
     margin-right:5px;
-    transition: all .3s;
+}
+.choose-box>.choose-list>li>div:nth-child(3)>span.lg-item{
+    background: #fff;
+    border:1px solid #ccc;
+    text-align: center;
+    width:40px;
+    height:40px;
+    border-radius: 50%;
+    cursor: pointer;
+    line-height: 40px;
+    margin:0px 4px;
+    color:#777;
 }
 .choose-box>.choose-list>li>div:first-child{
     background: #d81e06;
@@ -266,6 +278,15 @@
     padding:0px 10px;
     border-bottom-right-radius: 12px;
     border-top-left-radius: 12px;
+}
+.choose-box>.choose-list>li>div.lg-item{
+    background: #d81e06;
+    text-align: center;
+    padding:0px 10px;
+    border-bottom-right-radius: 12px;
+    border-top-left-radius: 12px;
+    line-height: 44px;
+    height:40px;
 }
 .choose-box>.choose-list>li>div:nth-child(2)>span{
     background: #777;
@@ -279,12 +300,12 @@
     background: #fff;
     border:1px solid #ccc;
     text-align: center;
-    width:24px;
-    height:24px;
+    width:28px;
+    height:28px;
     border-radius: 50%;
     cursor: pointer;
-    line-height: 24px;
-    margin:2px 4px;
+    line-height: 28px;
+    margin:0px 4px;
     color:#777;
 }
 .choose-box>.choose-add-box{
@@ -418,7 +439,6 @@
 .choose-list>li span.active{
     color: #fafafa !important;
     background: #d81e06 !important;
-    transform: scale(1.1);
     box-shadow: 0px 0px 8px 0px rgba(0,0,0,.2);
 }
 .choose-add-box>div>span.active{

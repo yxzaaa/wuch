@@ -158,7 +158,7 @@ export default {
     mounted(){
         this.$http.get('http://lgkj.chuangkegf.com/wuchuang/check.php').then((res)=>{
             if(res.body.code == 400){
-                this.$router.replace('/login');
+                //this.$router.replace('/login');
             }else if(res.body.code == 200){
                 if(!sessionStorage.getItem('login')){
                     sessionStorage.setItem('login',true);
@@ -202,39 +202,39 @@ export default {
             console.log(err);
         })
         //
-        //this.$http.post('http://lgkj.chuangkegf.com/wuchuang/pagekind.php',{
-        //    kind:'gettab',
-        //    userkind:0
-        //},{emulateJSON:true}).then((res)=>{
-        //    if(res.body.code == 200){
-        //        var that = this;
-        //        res.body.data.map(function(item,index){
-        //            that.navList.push({
-        //                title:item.pagename,
-        //                icon:item.icon,
-        //                isActive:false,
-        //                path:item.pagepath,
-        //                pageNum:item.pid
-        //            })
-        //        })
-        //        if(sessionStorage.getItem('pagenum')){
-        //            var pagenum = sessionStorage.getItem('pagenum');
-        //            that.navList.map(function(item,index){
-        //                item.isActive = false;
-        //                if(item.pageNum == pagenum){
-        //                    item.isActive = true;
-        //                }
-        //            })
-        //        }else{
-        //            this.changePage(0,this.navList[0].path);
-        //        }
-        //    }
-        //},(err)=>{
-        //    console.log(err);
-        //})
-        //this.userName = localStorage.getItem('uname');
-        //this.userid = localStorage.getItem('userid');
-        //this.getNews();
+        this.$http.post('http://lgkj.chuangkegf.com/wuchuang/pagekind.php',{
+            kind:'gettab',
+            userkind:0
+        },{emulateJSON:true}).then((res)=>{
+            if(res.body.code == 200){
+                var that = this;
+                res.body.data.map(function(item,index){
+                    that.navList.push({
+                        title:item.pagename,
+                        icon:item.icon,
+                        isActive:false,
+                        path:item.pagepath,
+                        pageNum:item.pid
+                    })
+                })
+                if(sessionStorage.getItem('pagenum')){
+                    var pagenum = sessionStorage.getItem('pagenum');
+                    that.navList.map(function(item,index){
+                        item.isActive = false;
+                        if(item.pageNum == pagenum){
+                            item.isActive = true;
+                        }
+                    })
+                }else{
+                    this.changePage(0,this.navList[0].path);
+                }
+            }
+        },(err)=>{
+            console.log(err);
+        })
+        this.userName = localStorage.getItem('uname');
+        this.userid = localStorage.getItem('userid');
+        this.getNews();
         //
     },
     methods:{
