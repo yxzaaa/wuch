@@ -273,6 +273,8 @@ export default {
                     if(res.body.code == 200){
                         if(res.body.data[2] != ''){
                             this.showGetPrice(res.body.data);
+                        }else if(res.body.data[2] == 'initPwd'){
+                            alert(res.body.data[0]);
                         }else{
                             this.showNotice(res.body.data[0]);
                         }

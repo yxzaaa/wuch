@@ -66,7 +66,7 @@
                                 <span class='icon icon-unlock'></span>
                                 <div>
                                     <h5>登录密码</h5>
-                                    <p>我们建议用户经常修改自己的登录密码，来保证资金的安全</p>
+                                    <p>我们建议用户经常修改自己的登录密码，来保证账户的安全</p>
                                 </div>
                             </div>
                             <div class='set-item-right mybtn' @click='showModal(4)'>
@@ -92,6 +92,7 @@
                 <div class='order-tab-box'>
                     <div :class="['order-tab',{'active':orderTab == 1}]" @click='changeOrderTab(1)'>我的投注</div>
                     <div :class="['order-tab',{'active':orderTab == 2}]" @click='changeOrderTab(2)'>开奖记录</div>
+                    <div :class="['order-tab',{'active':orderTab == 3}]" @click='changeOrderTab(3)'>个人彩票报表</div>
                 </div>
                 <div class='order-list' v-if='orderTab == 1'>
                     <!-- 我的投注 -->
@@ -211,6 +212,63 @@
                         <div class='next-page' @click='nextPage()'><span class='icon icon-angle-right'></span></div>
                     </div>
                 </div>
+                <div class='order-list' v-if='orderTab == 3'>
+                    <!-- 个人报表 -->
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>日期</th>
+                                <th>充值</th>
+                                <th>提现</th>
+                                <th>支出</th>
+                                <th>收益</th>
+                                <th>盈亏</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item,index) in personData" :key='index'>
+                                <td>{{item.date}}</td>
+                                <td>{{item.invest}}</td>
+                                <td>{{item.cash}}</td>
+                                <td>{{item.pay}}</td>
+                                <td>{{item.profit}}</td>
+                                <td>{{item.waxwane}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class='page-tool btn-group table-page'>
+                        <div class='show-num'><select type="text" v-model="pagesize">
+                            <option>10</option>
+                            <option>20</option>
+                            <option>30</option>
+                            </select> 条</div>
+                        <div class='show-num'>第 {{currPage}} 页</div>
+                        <div class='show-num'>共 {{totalPage}} 页</div>
+                        <div class='page-btn icon icon-angle-left' @click='prevPage()'></div>
+                        <div class='page-btn icon icon-circle' @click='firstPage()'></div>
+                        <div class='page-btn icon icon-double-angle-right' @click='lastPage()'></div>
+                        <div class='page-btn icon icon-angle-right' @click='nextPage()'></div>
+                    </div>
+                    
+                </div>
+                <div class='order-m-list' v-if='orderTab == 3'>
+                    <ul>
+                        <li v-for='(item,index) in hisData' :key='index' :class="{'succ':item.pagestate == 1}">
+                            <div class='m-pagename'>{{item.pagename}}</div>
+                            <div class='m-expect'>第<span>{{item.expect}}</span>期</div>
+                            <div class='m-expect'>开奖号码：<span>{{item.opencode}}</span></div>
+                            <div class='m-pay'>
+                                <span>开奖时间：{{item.opentime}}</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class='mobile-page'>
+                        <div class='prev-page' @click='prevPage()'><span class='icon icon-angle-left'></span></div>
+                        <div class='home-page' @click='firstPage()'><span class='icon icon-circle'></span></div>
+                        <div class='last-page' @click='lastPage()'><span class='icon icon-double-angle-right'></span></div>
+                        <div class='next-page' @click='nextPage()'><span class='icon icon-angle-right'></span></div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class='modal-content' v-if='modal'>
@@ -265,6 +323,7 @@ export default {
             listData:[],
             hisData:[],
             payData:[],
+            personData:[],
             newName:'',
             addMoney:0,
             getMoney:0,
@@ -350,6 +409,35 @@ export default {
             })
         },
         getListData(){
+            this.$emit('showLoading','');
+            this.$http.post('http://lgkj.chuangkegf.com/wuchuang/pagekind.php',{
+                kind:'gethiscount',
+                userid:this.userId,
+                username:this.userName
+            },{emulateJSON:true}).then((res)=>{
+                if(res.body.code == 200){
+                    this.totalDataCount = parseInt(res.body.data[0][0]);
+                    this.totalPage = Math.ceil(this.totalDataCount/this.pagesize);
+                    this.$http.post('http://lgkj.chuangkegf.com/wuchuang/pagekind.php',{
+                        kind:'gethis',
+                        userid:this.userId,
+                        username:this.userName,
+                        pagestart:this.startpage,
+                        pagesize:this.pagesize
+                    },{emulateJSON:true}).then((res)=>{
+                        if(res.body.code == 200){
+                            this.listData = res.body.data;
+                            this.$emit('hideLoading','');
+                        }
+                    },(err)=>{
+                        console.log(err);
+                    })
+                }
+            },(err)=>{
+                console.log(err);
+            })
+        },
+        getCountData(){
             this.$emit('showLoading','');
             this.$http.post('http://lgkj.chuangkegf.com/wuchuang/pagekind.php',{
                 kind:'gethiscount',

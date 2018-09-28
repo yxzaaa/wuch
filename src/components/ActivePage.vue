@@ -24,10 +24,13 @@
                 </div>
             </div>
             <div class='page-his'>
-                <p>历史开奖</p>
+                <p>历史开奖<span :class="['icon',{'icon-align-center':!showFive},{'icon-align-justify':showFive}]" @click='showMore()'></span></p>
                 <ul class='time-box'>
                     <li>第 {{hisList[1].expect}} 期<span>{{hisList[1].opencode}}</span></li>
                     <li>第 {{hisList[2].expect}} 期<span>{{hisList[2].opencode}}</span></li>
+                    <li v-if='showFive'>第 {{hisList[3].expect}} 期<span>{{hisList[3].opencode}}</span></li>
+                    <li v-if='showFive'>第 {{hisList[4].expect}} 期<span>{{hisList[4].opencode}}</span></li>
+                    <li v-if='showFive'>第 {{hisList[5].expect}} 期<span>{{hisList[5].opencode}}</span></li>
                 </ul>
             </div>
         </div>
@@ -305,6 +308,7 @@ export default {
         return{
             odds:0.995,
             toggleTab:1,
+            showFive:false,
             //数字盘
             numPageData:{
                 playname:'数字盘',
@@ -406,6 +410,9 @@ export default {
             hisList:[
                 {expect:'000',opencode:'0,0,0,0,0'},
                 {expect:'000',opencode:'0,0,0,0,0'},
+                {expect:'000',opencode:'0,0,0,0,0'},
+                {expect:'000',opencode:'0,0,0,0,0'},
+                {expect:'000',opencode:'0,0,0,0,0'},
                 {expect:'000',opencode:'0,0,0,0,0'}
             ],
             priceList:[],
@@ -450,6 +457,13 @@ export default {
         }
     },
     methods:{
+        showMore(){
+            if(this.showFive == false){
+                this.showFive = true;
+            }else{
+                this.showFive = false;
+            }
+        },
         getPageData(){
             this.pageId = this.$route.query.pageid;
             this.pageName = this.$route.query.pagename;
@@ -499,17 +513,13 @@ export default {
             },{emulateJSON:true}).then((res)=>{
                 if(res.body.code == 200){
                     var data = res.body.data;
-                    var len = data.length;
-                    if(len == 1){
-                        this.hisList = [
-                            data[0],{expect:'000',opencode:'0,0,0,0,0'},{expect:'000',opencode:'0,0,0,0,0'}
-                        ];
-                    }else if(len == 2){
-                        this.hisList = [
-                            data[0],data[1],{expect:'000',opencode:'0,0,0,0,0'}
-                        ];
-                    }else{
-                        this.hisList = data;
+                    this.hisList = [];
+                    for(var i=0;i<6;i++){
+                        if(data[i] != undefined){
+                            this.hisList.push(data[i]);
+                        }else{
+                            this.hisList.push({expect:'000',opencode:'0,0,0,0,0'});
+                        }
                     }
                     var count = 0;
                     this.scrollTimer = setInterval(()=>{
