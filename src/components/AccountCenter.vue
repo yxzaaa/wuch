@@ -92,7 +92,7 @@
                 <div class='order-tab-box'>
                     <div :class="['order-tab',{'active':orderTab == 1}]" @click='changeOrderTab(1)'>我的投注</div>
                     <div :class="['order-tab',{'active':orderTab == 2}]" @click='changeOrderTab(2)'>开奖记录</div>
-                    <div :class="['order-tab',{'active':orderTab == 3}]" @click='changeOrderTab(3)'>个人彩票报表</div>
+                    <div :class="['order-tab',{'active':orderTab == 3}]" @click='changeOrderTab(3)'>个人报表</div>
                 </div>
                 <div class='order-list' v-if='orderTab == 1'>
                     <!-- 我的投注 -->

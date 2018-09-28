@@ -172,6 +172,7 @@
     padding:10px;
     display: flex;
     justify-content: flex-start;
+    flex-wrap: wrap;
 }
 .order-tab-box>.order-tab{
     line-height: 30px;
@@ -181,9 +182,11 @@
     background: #fff;
     color:#777;
     text-align: center;
+    margin:5px 0px;
     margin-right:10px;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 14px;
 }
 .order-tab-box>.order-tab.active{
     background: #d81e06;

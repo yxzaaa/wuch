@@ -25,7 +25,7 @@
             </div>
             <div class='page-his'>
                 <p>历史开奖<span :class="['icon',{'icon-align-center':!showFive},{'icon-align-justify':showFive}]" @click='showMore()'></span></p>
-                <ul class='time-box'>
+                <ul :class="['time-box',{'show-five':showFive}]">
                     <li>第 {{hisList[1].expect}} 期<span>{{hisList[1].opencode}}</span></li>
                     <li>第 {{hisList[2].expect}} 期<span>{{hisList[2].opencode}}</span></li>
                     <li v-if='showFive'>第 {{hisList[3].expect}} 期<span>{{hisList[3].opencode}}</span></li>
